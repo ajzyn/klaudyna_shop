@@ -1,12 +1,14 @@
 import express from 'express'
 import asyncHanlder from 'express-async-handler'
+import Product from '../models/ProductModel.js'
 
 const app = express()
 
 const getProducts = app.get(
   '/',
   asyncHanlder(async (req, res) => {
-    res.json({ msg: 'działa' })
+    const products = await Product.find({})
+    res.json(products)
   })
 )
 

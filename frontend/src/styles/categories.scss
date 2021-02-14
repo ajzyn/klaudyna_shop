@@ -1,30 +1,18 @@
 @import './custom.scss';
 
-.homescreen-container {
-  h3 {
-    font-weight: 700;
-    color: $secondary;
-  }
-}
-
 .categories-container {
-  min-height: 300px;
-
   .list-group.categories {
-    position: absolute;
-    right: 0;
-    left: 0;
+    width: 100%;
     justify-content: space-between;
     flex-direction: row;
     overflow-x: scroll;
+    max-width: 1920px;
 
     a {
       text-decoration: none;
       flex-grow: 1;
     }
   }
-
-
 
   .list-group-item {
     border: none;
@@ -33,20 +21,28 @@
       text-align: center;
       font-weight: 400;
       transition: all 250ms;
-      margin-right: 25px;
+      margin-top: 20px;
     }
 
     &:hover .list-group-item-circle {
-      box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.5);
-      transform: scale(1.05, 1.05);
+      box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.3);
+      transform: scale(1.02);
       p,
       svg {
         color: $lajt;
       }
     }
+
+    @media screen and (min-width: $sm) {
+      &:hover .list-group-item-circle {
+        box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.6);
+        transform: scale(1.05, 1.05);
+      }
+    }
   }
 
   .list-group-item-circle {
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -55,12 +51,11 @@
     border-radius: 50%;
     border: 2px solid $secondary;
     background-color: $secondary;
-    margin: 40px 25px 20px 0 !important;
-    width: 120px;
-    height: 120px;
+    width: 80px;
+    height: 80px;
 
     transition: all 250ms;
-    box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.4);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 
     div {
       display: flex;
@@ -68,6 +63,12 @@
       svg {
         transition: all 250ms;
       }
+    }
+
+    @media screen and (min-width: $sm) {
+      width: 100px;
+      height: 100px;
+      box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.4);
     }
   }
 }

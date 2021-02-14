@@ -8,7 +8,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node backend/server.js",
     "server": "nodemon backend/server.js",
-    "dev": "concurrently \"npm run server\" \"cd frontend && npm start\" "
+    "dev": "concurrently \"npm run server\" \"cd frontend && npm start\" ",
+    "data:destroy": "node backend/seeder.js -d",
+    "data:import": "node backend/seeder.js"
   },
   "keywords": [],
   "author": "",

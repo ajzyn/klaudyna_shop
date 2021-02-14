@@ -14,11 +14,10 @@ function App() {
     <Router>
       <Header />
       <main>
-        <Container fluid='lg'>
-          <Switch>
-            <Route path='/' exact component={HomeScreen} />
-          </Switch>
-        </Container>
+        <Switch>
+          <Route path='/' exact component={HomeScreen} />
+          <Container fluid='lg'></Container>
+        </Switch>
       </main>
       <Footer />
     </Router>

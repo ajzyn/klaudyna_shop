@@ -1,8 +1,12 @@
 @import './custom.scss';
 
 main {
-  margin: 65px 0;
+  margin: 40px 0;
+  min-height: 100vh;
   // overflow: hidden;
+  @media screen and (min-width: $md) {
+    margin: 65px 0;
+  }
 }
 
 .primary-color {
@@ -15,4 +19,20 @@ main {
 
 .primary-bg-color {
   background-color: $primary;
+}
+
+h3 {
+  font-weight: 700 !important;
+  color: $secondary !important;
+  margin: 10px 20px !important;
+}
+
+hr {
+  margin: 10px 20px;
+}
+
+.custom-loader {
+  position: relative;
+  left: 50%;
+  top: 100px;
 }

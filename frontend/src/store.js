@@ -4,7 +4,7 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import { logger } from 'redux-logger'
 import { productListReducer } from './reducers/ProdcutReducers'
 
-const reducer = combineReducers({
+const reducers = combineReducers({
   productList: productListReducer
 })
 
@@ -12,7 +12,7 @@ const initialState = {}
 
 const middleware = [thunk, logger]
 const store = createStore(
-  reducer,
+  reducers,
   initialState,
   composeWithDevTools(applyMiddleware(...middleware))
 )
