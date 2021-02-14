@@ -1,0 +1,30 @@
+$theme-colors: (
+  'info': deepskyblue,
+  'danger': tomato,
+  'dark-purple': rgba(35, 12, 51, 1),
+  'light': rgba(202, 168, 245, 1),
+  'primary': rgba(153, 132, 212, 1),
+  'secondary': rgba(178, 124, 102, 1),
+  'dark': rgba(89, 46, 131, 1)
+);
+
+/* SCSS RGB */
+$primary: rgba(153, 132, 212, 1);
+$lajt: rgba(202, 168, 245, 1);
+$secondary: rgb(170, 115, 94);
+$dark: rgba(89, 46, 131, 1);
+$dark-purple: rgba(35, 12, 51, 1);
+$white: #eee;
+$danger: tomato;
+
+body {
+  font-family: 'Montserrat', sans-serif !important;
+}
+
+$sm: 576px;
+$md: 768px;
+$lg: 992px;
+$xl: 1200px;
+
+@import '~bootstrap/scss/bootstrap.scss';
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300,400,700&display=swap');

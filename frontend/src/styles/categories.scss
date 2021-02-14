@@ -1,0 +1,73 @@
+@import './custom.scss';
+
+.homescreen-container {
+  h3 {
+    font-weight: 700;
+    color: $secondary;
+  }
+}
+
+.categories-container {
+  min-height: 300px;
+
+  .list-group.categories {
+    position: absolute;
+    right: 0;
+    left: 0;
+    justify-content: space-between;
+    flex-direction: row;
+    overflow-x: scroll;
+
+    a {
+      text-decoration: none;
+      flex-grow: 1;
+    }
+  }
+
+
+
+  .list-group-item {
+    border: none;
+
+    p {
+      text-align: center;
+      font-weight: 400;
+      transition: all 250ms;
+      margin-right: 25px;
+    }
+
+    &:hover .list-group-item-circle {
+      box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.5);
+      transform: scale(1.05, 1.05);
+      p,
+      svg {
+        color: $lajt;
+      }
+    }
+  }
+
+  .list-group-item-circle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: $dark;
+    border-radius: 50%;
+    border: 2px solid $secondary;
+    background-color: $secondary;
+    margin: 40px 25px 20px 0 !important;
+    width: 120px;
+    height: 120px;
+
+    transition: all 250ms;
+    box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.4);
+
+    div {
+      display: flex;
+      justify-content: center;
+      svg {
+        transition: all 250ms;
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+@import './custom.scss';
+
+footer {
+  padding: 5px 15px;
+  font-size: 14px;
+  font-weight: bold;
+  background-color: $primary;
+  color: $white;
+  p {
+    margin: 0 !important;
+    text-align: center;
+  }
+}

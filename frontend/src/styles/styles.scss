@@ -1,0 +1,18 @@
+@import './custom.scss';
+
+main {
+  margin: 65px 0;
+  // overflow: hidden;
+}
+
+.primary-color {
+  color: $primary;
+}
+
+.lajt-color {
+  color: $lajt;
+}
+
+.primary-bg-color {
+  background-color: $primary;
+}

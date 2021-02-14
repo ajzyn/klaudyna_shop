@@ -1,0 +1,62 @@
+@import './custom.scss';
+
+h1.navbar-brand {
+  display: block;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  img {
+    max-width: 100px;
+  }
+}
+
+nav.custom-navbar-header {
+  color: $white !important;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+div.navbar-nav {
+  flex-direction: row;
+}
+
+.custom-navbar-header .navbar-nav a.nav-link > svg {
+  transition: all 200ms;
+  color: $lajt;
+}
+
+.custom-navbar-header .navbar-nav a.nav-link:hover > svg,
+.custom-navbar-header .navbar-nav a.nav-link:active > svg,
+.custom-navbar-header .navbar-nav a.nav-link:focus > svg {
+  color: $primary;
+}
+
+.header-container {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.header-searchbox {
+  flex-grow: 1;
+  margin-left: 45px;
+  margin-right: 45px;
+  justify-content: center;
+
+  input {
+    max-width: 600px;
+  }
+  @media (max-width: 767px) {
+    order: 3;
+    width: 100%;
+    flex-shrink: 0;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  button {
+    margin-left: 10px;
+    color: $white;
+  }
+}
