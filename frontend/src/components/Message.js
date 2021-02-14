@@ -1,9 +1,12 @@
 import React from 'react'
-import { Alert } from 'react-bootstrap'
+import { Alert, Container } from 'react-bootstrap'
 
 const Message = ({ children, variant }) => {
-  console.log(variant)
-  return <Alert>{children}</Alert>
+  return (
+    <Container>
+      <Alert variant={variant}>{children}</Alert>
+    </Container>
+  )
 }
 
 export default Message
