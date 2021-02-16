@@ -4,6 +4,7 @@ import { Switch, Route, BrowserRouter as Router } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import HomeScreen from './screens/HomeScreen'
+import ProductDetailsScreen from './screens/ProductDetailsScreen'
 //scss
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './styles/styles.scss'
@@ -16,7 +17,7 @@ function App() {
       <main>
         <Switch>
           <Route path='/' exact component={HomeScreen} />
-          <Container fluid='lg'></Container>
+          <Route path='/product/:id' component={ProductDetailsScreen} />
         </Switch>
       </main>
       <Footer />
