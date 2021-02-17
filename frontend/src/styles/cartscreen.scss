@@ -1,0 +1,14 @@
+@import './custom.scss';
+
+.cartscreen-image {
+  height: auto !important;
+  object-fit: contain;
+  @media screen and (min-width: $md) {
+    height: 12vw !important;
+  }
+}
+
+.cartscreen-row > div {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

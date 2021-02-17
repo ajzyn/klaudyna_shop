@@ -15,39 +15,50 @@ import { getProductDetails } from '../actions/ProductActions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import Rating from '../components/Rating'
+import '../styles/productscreen.scss'
+import { PRODUCT_DETAILS_RESET } from '../constants/ProductConstants'
 
 const ProductDetailsScreen = ({ match, history }) => {
   const dispatch = useDispatch()
   const productDetails = useSelector(state => state.productDetails)
   const { error, loading, product } = productDetails
-  const [qty, setQty] = useState(product && product.countInStock > 0 ? 1 : 0)
+  const [qty, setQty] = useState(1)
 
   useEffect(() => {
     dispatch(getProductDetails(match.params.id))
+    return () => {
+      dispatch({ type: PRODUCT_DETAILS_RESET })
+    }
   }, [dispatch, match])
 
   const handleAddToCart = () => {
-    history.push(`/cart/`)
+    history.push(`/cart/${match.params.id}?qty=${qty}`)
   }
 
   return (
     <Container fluid='xl'>
-      <LinkContainer to='/'>
-        <Button>Powrót</Button>
-      </LinkContainer>
+      <Button
+        type='button'
+        style={{ marginBottom: '20px' }}
+        onClick={() => history.push('/')}
+      >
+        Powrót
+      </Button>
       {loading ? (
         <Loader />
       ) : error ? (
         <Message variant='danger'>{error}</Message>
       ) : (
         <Row>
-          <Col md='6'>
-            <Image src={`/images${product.image}`} fluid />
+          <Col md='4'>
+            <div className='productscreen-image'>
+              <Image src={`/images${product.image}`} fluid />
+            </div>
           </Col>
-          <Col md='3'>
+          <Col md='5'>
             <ListGroup variant='flush'>
               <ListGroup.Item>
-                <h2>{product.name}</h2>
+                <h2 className='productscreen-name'>{product.name}</h2>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Rating
@@ -73,7 +84,7 @@ const ProductDetailsScreen = ({ match, history }) => {
                   <Col>
                     <Form.Control
                       as='select'
-                      onChange={e => console.log(e.target.value)}
+                      onChange={e => setQty(e.target.value)}
                     >
                       {[...Array(product.countInStock)].map((count, index) => (
                         <option key={index + 1} value={index + 1}>

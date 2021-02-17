@@ -9,15 +9,19 @@ import ProductDetailsScreen from './screens/ProductDetailsScreen'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './styles/styles.scss'
 import './styles/custom.scss'
+import ScrollToTop from './components/ScrollToTop'
+import CartScreen from './screens/CartScreen'
 
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Header />
       <main>
         <Switch>
           <Route path='/' exact component={HomeScreen} />
           <Route path='/product/:id' component={ProductDetailsScreen} />
+          <Route path='/cart/:id?' component={CartScreen} />
         </Switch>
       </main>
       <Footer />

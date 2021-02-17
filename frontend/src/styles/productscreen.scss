@@ -1,0 +1,11 @@
+@import './custom.scss';
+
+.productscreen-name {
+  word-break: break-all;
+}
+
+.productscreen-image {
+  img {
+    object-fit: contain;
+  }
+}
