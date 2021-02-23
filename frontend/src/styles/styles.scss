@@ -40,3 +40,20 @@ hr {
 svg {
   margin: 0 !important;
 }
+
+main h1 {
+  color: #333;
+  font-size: 1.7rem;
+}
+
+input {
+  background-color: #fff !important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  appearance: menulist-button;
+  border: 1px solid #e7e2f5;
+  -webkit-box-shadow: 0 0 0px 1000px $light inset;
+  transition: background-color 5000s ease-in-out 0s;
+}

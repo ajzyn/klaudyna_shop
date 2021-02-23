@@ -20,15 +20,24 @@ div.navbar-nav {
   flex-direction: row;
 }
 
-.custom-navbar-header .navbar-nav a.nav-link > svg {
+.custom-navbar-header .navbar-nav a.nav-link > svg,
+.custom-navbar-header .dropdown-toggle,
+.custom-navbar-header .dropdown-toggle > svg {
   transition: all 200ms;
   color: $lajt;
 }
 
 .custom-navbar-header .navbar-nav a.nav-link:hover > svg,
 .custom-navbar-header .navbar-nav a.nav-link:active > svg,
-.custom-navbar-header .navbar-nav a.nav-link:focus > svg {
+.custom-navbar-header .navbar-nav a.nav-link:focus > svg,
+.custom-navbar-header .dropdown-toggle:hover,
+.custom-navbar-header .dropdown-toggle:hover > svg,
+.custom-navbar-header .dropdown-toggle:active,
+.custom-navbar-header .dropdown-toggle:active > svg,
+.custom-navbar-header .dropdown-toggle:focus,
+.custom-navbar-header .dropdown-toggle:focus > svg {
   color: $primary;
+  cursor: pointer;
 }
 
 .header-container {
@@ -58,5 +67,21 @@ div.navbar-nav {
   button {
     margin-left: 10px;
     color: $white;
+  }
+}
+
+.dropdown {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & > a {
+    padding: 0.5rem;
+  }
+}
+
+.dropdown-menu {
+  position: absolute !important;
+  @media screen and (max-width: 1200px) {
+    left: -120px !important;
   }
 }

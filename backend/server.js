@@ -9,9 +9,11 @@ import { errorHandler, notFound } from './middlewares/errorMiddleware.js'
 
 //routes
 import productRoutes from './routes/ProductRoutes.js'
+import userRoutes from './routes/UserRoutes.js'
 
 const app = express()
 app.use(morgan('tiny'))
+app.use(express.json())
 
 dotenv.config()
 connectDB()
@@ -20,6 +22,7 @@ const PORT = process.env.PORT || 5000
 
 //routes
 app.use('/api/products', productRoutes)
+app.use('/api/users', userRoutes)
 
 app.use(notFound)
 app.use(errorHandler)

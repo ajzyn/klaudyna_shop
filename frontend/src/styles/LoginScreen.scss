@@ -1,0 +1,15 @@
+@import './custom.scss';
+
+.loginscreen-form-container {
+  margin: 0 auto;
+  display: flex;
+  max-width: $sm;
+  flex-direction: column;
+  background-color: #fff;
+  margin-top: -15px;
+  padding: 40px;
+  border-radius: 5px;
+  h1 {
+    margin-bottom: 30px;
+  }
+}

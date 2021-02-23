@@ -40,7 +40,7 @@ const ProductDetailsScreen = ({ match, history }) => {
       <Button
         type='button'
         style={{ marginBottom: '20px' }}
-        onClick={() => history.push('/')}
+        onClick={() => history.goBack()}
       >
         Powrót
       </Button>

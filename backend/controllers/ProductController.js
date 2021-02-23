@@ -5,6 +5,8 @@ import Product from '../models/ProductModel.js'
 const app = express()
 
 const getProducts = asyncHanlder(async (req, res) => {
+  //przy filtrowaniu obiektów i sortowaniu ich sprawdzo odincek
+  // https://www.youtube.com/watch?v=myrNOnzfk9I&list=PLjHmWifVUNMLjh1nP3p-U0VYrk_9aXVjE&index=8
   const products = await Product.find({})
   res.json(products)
 })

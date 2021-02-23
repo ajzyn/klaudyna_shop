@@ -11,6 +11,9 @@ import './styles/styles.scss'
 import './styles/custom.scss'
 import ScrollToTop from './components/ScrollToTop'
 import CartScreen from './screens/CartScreen'
+import LoginScreen from './screens/LoginScreen'
+import RegisterScreen from './screens/RegisterScreen'
+import ProfileScreen from './screens/ProfileScreen'
 
 function App() {
   return (
@@ -22,6 +25,10 @@ function App() {
           <Route path='/' exact component={HomeScreen} />
           <Route path='/product/:id' component={ProductDetailsScreen} />
           <Route path='/cart/:id?' component={CartScreen} />
+          <Route path='/login' component={LoginScreen} />
+          <Route path='/register' component={RegisterScreen} />
+          <Route path='/login' component={LoginScreen} />
+          <Route path='/profile' component={ProfileScreen} />
         </Switch>
       </main>
       <Footer />
