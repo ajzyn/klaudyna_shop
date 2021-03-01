@@ -1,7 +1,8 @@
 import User from '../models/UserModel.js'
 import jwt from 'jsonwebtoken'
+import asyncHandler from 'express-async-handler'
 
-export const protect = async (req, res, next) => {
+export const protect = asyncHandler(async (req, res, next) => {
   let token
   if (
     req.headers.authorization &&
@@ -9,8 +10,6 @@ export const protect = async (req, res, next) => {
   ) {
     try {
       token = req.headers.authorization.split(' ')[1]
-      //sprawdzic czy token nie wygasl
-      //sprawdzic dalczego nie dzialaja mi hadnle errory przy zlym tokenie, albo w akcji sie zle zapisuje zwrotka - ale i tak servver sie wysypuje wtedy cos jest nie tak
       const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
       const user = await User.findById(decoded._id).select('-password')
@@ -27,4 +26,4 @@ export const protect = async (req, res, next) => {
     res.status(401)
     throw new Error('Błąd autoryzacji. Brak tokena')
   }
-}
+})

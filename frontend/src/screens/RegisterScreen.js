@@ -17,7 +17,7 @@ const RegisterScreen = ({ location, history }) => {
 
   const redirect = location.search
     ? location.search.slice(location.search.indexOf('=') + 1)
-    : null
+    : ''
 
   useEffect(() => {
     if (userInfo) {

@@ -5,10 +5,11 @@ import * as Yup from 'yup'
 import { Row, Col, Container, Form, Button } from 'react-bootstrap'
 import '../styles/profilescreen.scss'
 import { updateUserProfile } from '../actions/UserActions'
+import Loader from '../components/Loader'
 
 const ProfileScreen = ({ history }) => {
   const dispatch = useDispatch()
-  const { userInfo } = useSelector(state => state.userLogin)
+  const { userInfo, loading } = useSelector(state => state.userLogin)
 
   useEffect(() => {
     if (!userInfo) history.push('/')
@@ -43,7 +44,9 @@ const ProfileScreen = ({ history }) => {
       dispatch(updateUserProfile(data))
     }
   })
-  return (
+  return loading ? (
+    <Loader />
+  ) : (
     <Container className='profilescreen-container'>
       <Row>
         <Col md={3}>

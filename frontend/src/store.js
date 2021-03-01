@@ -12,6 +12,8 @@ import {
   userRegisterReducer,
   userUpdateProfileReducer
 } from './reducers/UserReducers'
+import jwt_decode from 'jwt-decode'
+import jwtDecode from 'jwt-decode'
 
 const reducers = combineReducers({
   productList: productListReducer,
@@ -30,28 +32,28 @@ const initalCartItems = JSON.parse(localStorage.getItem('cart'))
   ? JSON.parse(localStorage.getItem('cart'))
   : []
 
+const initalShippingAddress = JSON.parse(
+  localStorage.getItem('shippingAddress')
+)
+  ? JSON.parse(localStorage.getItem('shippingAddress'))
+  : {}
+
+const initialPaymentMethod = JSON.parse(localStorage.getItem('paymentMethod'))
+  ? JSON.parse(localStorage.getItem('paymentMethod'))
+  : ''
+
 const initialState = {
   cart: {
-    cartItems: [...initalCartItems]
+    cartItems: [...initalCartItems],
+    shippingAddress: initalShippingAddress,
+    paymentMethod: initialPaymentMethod
   },
   userLogin: {
     userInfo: initialUserInfo
   }
 }
 
-// ponizszy middleware ale chyba lepiej w backendzie zrobic routa od weryfikacji czy token nie jest wygasniety i w tym middlewarze to sprawdzac, albo w authmiddleware jakos to oagrnac
-// const checkTokenExpirationMiddleware = store => next => action => {
-//   const token =
-//     JSON.parse(localStorage.getItem('userInfo')) &&
-//     JSON.parse(localStorage.getItem('userInfo'))['token']
-//   if (jwtDecode(token).exp < Date.now() / 1000) {
-//     next(action)
-//     localStorage.removeItem('userInfo')
-//   }
-//   next(action)
-// }
-
-const middleware = [thunk, logger]
+const middleware = [thunk]
 
 const store = createStore(
   reducers,

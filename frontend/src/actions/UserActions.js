@@ -47,6 +47,7 @@ export const userRegister = loginData => async (dispatch, getState) => {
     }
     const { data } = await axios.post('/users', loginData, options)
     dispatch({ type: USER_REGISTER_SUCCESS, payload: data })
+    dispatch({ type: USER_LOGIN_SUCCESS, payload: data })
     localStorage.setItem(
       'userInfo',
       JSON.stringify(getState().userRegister.userInfo)

@@ -15,7 +15,7 @@ import {
 } from '../constants/UserConstants'
 
 export const userLoginReducer = (
-  state = { userInfo: {} },
+  state = { userInfo: null },
   { type, payload }
 ) => {
   switch (type) {
