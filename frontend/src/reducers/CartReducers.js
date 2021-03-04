@@ -17,6 +17,7 @@ export const cartReducer = (
       const existItem = state.cartItems.find(item => item.id === payload.id)
       if (existItem) {
         return {
+          ...state,
           loading: false,
           cartItems: [
             ...state.cartItems.map(item =>
@@ -25,10 +26,11 @@ export const cartReducer = (
           ]
         }
       } else {
-        return { cartItems: [...state.cartItems, payload] }
+        return { ...state, cartItems: [...state.cartItems, payload] }
       }
     case CART_REMOVE_ITEM:
       return {
+        ...state,
         cartItems: [...state.cartItems.filter(item => item.id !== payload)]
       }
     case CART_SAVE_SHIPPING_ADDRESS:

@@ -10,7 +10,6 @@ import {
   Container,
   Form
 } from 'react-bootstrap'
-import { LinkContainer } from 'react-router-bootstrap'
 import { getProductDetails } from '../actions/ProductActions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
@@ -34,7 +33,6 @@ const ProductDetailsScreen = ({ match, history }) => {
   const handleAddToCart = () => {
     history.push(`/cart/${match.params.id}?qty=${qty}`)
   }
-
   return (
     <Container fluid='xl'>
       <Button
@@ -52,7 +50,12 @@ const ProductDetailsScreen = ({ match, history }) => {
         <Row>
           <Col md='4'>
             <div className='productscreen-image'>
-              <Image src={`/images${product.image}`} fluid />
+              <Image
+                src={`/images/${product.image}`}
+                fluid
+                alt={product.name}
+                rounded
+              />
             </div>
           </Col>
           <Col md='5'>

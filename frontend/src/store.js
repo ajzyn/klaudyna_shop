@@ -10,10 +10,14 @@ import { cartReducer } from './reducers/CartReducers'
 import {
   userLoginReducer,
   userRegisterReducer,
-  userUpdateProfileReducer
+  userUpdateProfileReducer,
+  userProfileReducer
 } from './reducers/UserReducers'
-import jwt_decode from 'jwt-decode'
-import jwtDecode from 'jwt-decode'
+import { userLogout } from './actions/UserActions'
+import {
+  orderCreateReducer,
+  orderDetailsReducer
+} from './reducers/OrderReducer'
 
 const reducers = combineReducers({
   productList: productListReducer,
@@ -21,7 +25,10 @@ const reducers = combineReducers({
   cart: cartReducer,
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
-  userUpdatedProfile: userUpdateProfileReducer
+  userUpdatedProfile: userUpdateProfileReducer,
+  orderCreate: orderCreateReducer,
+  orderDetails: orderDetailsReducer,
+  userProfile: userProfileReducer
 })
 
 const initialUserInfo = JSON.parse(localStorage.getItem('userInfo'))
@@ -53,7 +60,16 @@ const initialState = {
   }
 }
 
-const middleware = [thunk]
+const authInterceptor = ({ dispatch }) => next => action => {
+  if (action.status && action.status === 401) {
+    dispatch(userLogout())
+  } else {
+    next(action)
+  }
+  next(action)
+}
+
+const middleware = [thunk, authInterceptor]
 
 const store = createStore(
   reducers,

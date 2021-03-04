@@ -4,16 +4,15 @@ import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { Row, Col, Container, Form, Button } from 'react-bootstrap'
 import '../styles/profilescreen.scss'
-import { updateUserProfile } from '../actions/UserActions'
+import { updateUserProfile, getUserProfile } from '../actions/UserActions'
 import Loader from '../components/Loader'
+import useCheckAuthorization from '../hooks/useCheckAuthorization'
 
 const ProfileScreen = ({ history }) => {
   const dispatch = useDispatch()
   const { userInfo, loading } = useSelector(state => state.userLogin)
 
-  useEffect(() => {
-    if (!userInfo) history.push('/')
-  }, [dispatch, userInfo, history])
+  useCheckAuthorization(history)
 
   const formik = useFormik({
     initialValues: {

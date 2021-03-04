@@ -10,6 +10,7 @@ import { errorHandler, notFound } from './middlewares/errorMiddleware.js'
 //routes
 import productRoutes from './routes/ProductRoutes.js'
 import userRoutes from './routes/UserRoutes.js'
+import orderRoutes from './routes/OrderRoutes.js'
 
 const app = express()
 app.use(morgan('tiny'))
@@ -23,6 +24,7 @@ const PORT = process.env.PORT || 5000
 //routes
 app.use('/api/products', productRoutes)
 app.use('/api/users', userRoutes)
+app.use('/api/order', orderRoutes)
 
 app.use(notFound)
 app.use(errorHandler)

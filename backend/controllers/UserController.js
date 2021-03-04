@@ -76,8 +76,23 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     res.json({
       _id: updatedUser._id,
       name: updatedUser.name,
-      email: updatedUser.email
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+      token: generateToken(updatedUser._id)
     })
+  } else {
+    res.status(404)
+    throw new Error('Uzytkownik nie znaleziony')
+  }
+})
+
+//@desc get user details
+//@route GET /api/users/profile
+//@access private
+const getUserProfile = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id).select('-password')
+  if (user) {
+    res.json(user)
   } else {
     res.status(404)
     throw new Error('Uzytkownik nie znaleziony')
@@ -87,4 +102,4 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 // dodaj slug!! mongoose-url-slugs lib do produktow
 //https://medium.com/fbdevclagos/how-to-create-unique-urls-in-an-expressjs-and-mongodb-app-78865802902e
 
-export { authUser, registerUser, updateUserProfile }
+export { authUser, registerUser, updateUserProfile, getUserProfile }
