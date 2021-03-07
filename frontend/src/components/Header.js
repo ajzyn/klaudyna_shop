@@ -37,7 +37,7 @@ const Header = () => {
               </Nav.Link>
             </LinkContainer>
             {userInfo ? (
-              <Dropdown onSelect={e => console.log(e)}>
+              <Dropdown>
                 <Dropdown.Toggle id='dropdown-custom-1' as='a'>
                   <FontAwesomeIcon icon={faUser} size='lg' className='mr-2' />
                 </Dropdown.Toggle>
@@ -60,6 +60,21 @@ const Header = () => {
                   >
                     Wyloguj
                   </Dropdown.Item>
+                  {userInfo.isAdmin && (
+                    <>
+                      <Dropdown.Divider />
+                      <Dropdown.Header>Zarządzaj</Dropdown.Header>
+                      <LinkContainer to='/admin/orders'>
+                        <Dropdown.Item eventKey='1'>Zamówienia</Dropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to='/admin/users'>
+                        <Dropdown.Item eventKey='1'>Użytkownicy</Dropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to='/admin/products'>
+                        <Dropdown.Item eventKey='1'>Produkty</Dropdown.Item>
+                      </LinkContainer>
+                    </>
+                  )}
                 </Dropdown.Menu>
               </Dropdown>
             ) : (

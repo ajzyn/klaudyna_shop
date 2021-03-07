@@ -99,7 +99,21 @@ const getUserProfile = asyncHandler(async (req, res) => {
   }
 })
 
+//@desc get all users
+//@route GET /api/users/all
+//@access private admin
+const getAllUsers = asyncHandler(async (req, res) => {
+  const users = await User.find({}).select('-password')
+  res.json(users)
+})
+
 // dodaj slug!! mongoose-url-slugs lib do produktow
 //https://medium.com/fbdevclagos/how-to-create-unique-urls-in-an-expressjs-and-mongodb-app-78865802902e
 
-export { authUser, registerUser, updateUserProfile, getUserProfile }
+export {
+  authUser,
+  registerUser,
+  updateUserProfile,
+  getUserProfile,
+  getAllUsers
+}

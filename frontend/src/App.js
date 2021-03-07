@@ -5,6 +5,7 @@ import {
   BrowserRouter as Router,
   Redirect
 } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 //components
 import Header from './components/Header'
 import Footer from './components/Footer'
@@ -23,8 +24,10 @@ import ShippingScreen from './screens/ShippingScreen'
 import PaymentMethodScreen from './screens/PaymentMethodScreen'
 import PlaceOrderScreen from './screens/PlaceOrderScreen'
 import OrderScreen from './screens/OrderScreen'
+import UserListScreen from './screens/UserListScreen'
 
 function App() {
+  const { userInfo } = useSelector(state => state.userLogin)
   return (
     <Router>
       <ScrollToTop />
@@ -42,6 +45,7 @@ function App() {
           <Route path='/payment' component={PaymentMethodScreen} />
           <Route path='/placeorder' component={PlaceOrderScreen} />
           <Route path='/order/:id' component={OrderScreen} />
+          <Route path='/admin/users' component={UserListScreen} />
           <Route render={() => <Redirect to='/' />}></Route>
         </Switch>
       </main>

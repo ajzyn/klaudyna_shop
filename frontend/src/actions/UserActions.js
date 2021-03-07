@@ -12,8 +12,13 @@ import {
   USER_UPDATE_PROFILE_FAIL,
   USER_PROFILE_DETAILS_REQUEST,
   USER_PROFILE_DETAILS_FAIL,
-  USER_PROFILE_DETAILS_SUCCESS
+  USER_PROFILE_DETAILS_SUCCESS,
+  USER_LIST_REQUEST,
+  USER_LIST_SUCCESS,
+  USER_LIST_FAIL,
+  USER_LIST_RESET
 } from '../constants/UserConstants'
+import { ORDER_LIST_MY_RESET } from '../constants/OrderConstants'
 
 export const userLogin = loginData => async (dispatch, getState) => {
   dispatch({ type: USER_LOGIN_REQUEST })
@@ -68,6 +73,8 @@ export const userRegister = loginData => async (dispatch, getState) => {
 
 export const userLogout = () => (dispatch, getState) => {
   dispatch({ type: USER_LOGOUT })
+  dispatch({ type: ORDER_LIST_MY_RESET })
+  dispatch({ type: USER_LIST_RESET })
   localStorage.setItem(
     'userInfo',
     JSON.stringify(getState().userLogin.userInfo)
@@ -127,6 +134,33 @@ export const getUserProfile = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: USER_PROFILE_DETAILS_FAIL,
+      payload:
+        error.response && error.response.data.err
+          ? error.response.data.err
+          : error.message,
+      status: error.response.status
+    })
+  }
+}
+
+export const getAllUsers = () => async (dispatch, getState) => {
+  dispatch({ type: USER_LIST_REQUEST })
+  const {
+    userLogin: { userInfo }
+  } = getState()
+
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${userInfo.token}`
+    }
+  }
+  try {
+    const { data, status } = await axios.get(`/users/all`, config)
+    dispatch({ type: USER_LIST_SUCCESS, payload: data, status })
+  } catch (error) {
+    dispatch({
+      type: USER_LIST_FAIL,
       payload:
         error.response && error.response.data.err
           ? error.response.data.err

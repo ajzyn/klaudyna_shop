@@ -76,7 +76,7 @@ const PlaceOrderScreen = ({ history }) => {
                   <h4>Przedmioty zamówienia</h4>
                   <ListGroup variant='flush'>
                     {cartItems.map(cartItem => (
-                      <ListGroup.Item key={cartItem.id}>
+                      <ListGroup.Item key={cartItem.product}>
                         <Row>
                           <Col md='2' style={ColStyle}>
                             <Image

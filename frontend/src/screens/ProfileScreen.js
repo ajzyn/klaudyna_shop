@@ -1,18 +1,33 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-import { Row, Col, Container, Form, Button } from 'react-bootstrap'
+import { Row, Col, Container, Form, Button, Table } from 'react-bootstrap'
 import '../styles/profilescreen.scss'
 import { updateUserProfile, getUserProfile } from '../actions/UserActions'
 import Loader from '../components/Loader'
+import Message from '../components/Message'
 import useCheckAuthorization from '../hooks/useCheckAuthorization'
+import { getOrders } from '../actions/OrderActions'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimes, faCheck } from '@fortawesome/free-solid-svg-icons'
 
 const ProfileScreen = ({ history }) => {
   const dispatch = useDispatch()
+
   const { userInfo, loading } = useSelector(state => state.userLogin)
 
+  const orderListMy = useSelector(state => state.orderListMy)
+  const { orders, loading: loadingOrders, success } = orderListMy
+
   useCheckAuthorization(history)
+
+  useEffect(() => {
+    if (userInfo && !success) {
+      dispatch(getOrders())
+    }
+  }, [dispatch, userInfo])
 
   const formik = useFormik({
     initialValues: {
@@ -94,6 +109,62 @@ const ProfileScreen = ({ history }) => {
         </Col>
         <Col md={9}>
           <h2>Moje zamówienia</h2>
+          {loadingOrders ? (
+            <Loader />
+          ) : orders.length < 1 ? (
+            <Message variant='info'>Brak zamówień</Message>
+          ) : (
+            <Table striped bordered hover>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Data</th>
+                  <th>Kwota</th>
+                  <th>Płatność</th>
+                  <th>Wysyłka</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {orders.map(order => (
+                  <tr key={order._id}>
+                    <td>{order._id}</td>
+                    <td>{order.createdAt.substring(0, 10)}</td>
+                    <td>{order.totalPrice}</td>
+                    <td>
+                      {order.isPaid ? (
+                        <FontAwesomeIcon
+                          icon={faCheck}
+                          style={{ color: 'green' }}
+                        />
+                      ) : (
+                        <FontAwesomeIcon
+                          icon={faTimes}
+                          style={{ color: 'red' }}
+                        />
+                      )}
+                    </td>
+                    <td>
+                      {order.idDelivered ? (
+                        <FontAwesomeIcon
+                          icon={faCheck}
+                          style={{ color: 'green' }}
+                        />
+                      ) : (
+                        <FontAwesomeIcon
+                          icon={faTimes}
+                          style={{ color: 'red' }}
+                        />
+                      )}
+                    </td>
+                    <td>
+                      <Link to={`/order/${order._id}`}>Szczegóły</Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          )}
         </Col>
       </Row>
     </Container>

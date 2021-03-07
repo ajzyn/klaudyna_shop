@@ -16,6 +16,7 @@ import Message from '../components/Message'
 import Rating from '../components/Rating'
 import '../styles/productscreen.scss'
 import { PRODUCT_DETAILS_RESET } from '../constants/ProductConstants'
+import jwt_decode from 'jwt-decode'
 
 const ProductDetailsScreen = ({ match, history }) => {
   const dispatch = useDispatch()
