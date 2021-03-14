@@ -1,9 +1,9 @@
-import express from 'express'
 import asyncHanlder from 'express-async-handler'
 import Product from '../models/ProductModel.js'
 
-const app = express()
-
+//@desc get all products
+//@route GET /api/products
+//@access public
 const getProducts = asyncHanlder(async (req, res) => {
   //przy filtrowaniu obiektów i sortowaniu ich sprawdzo odincek
   // https://www.youtube.com/watch?v=myrNOnzfk9I&list=PLjHmWifVUNMLjh1nP3p-U0VYrk_9aXVjE&index=8
@@ -11,6 +11,9 @@ const getProducts = asyncHanlder(async (req, res) => {
   res.json(products)
 })
 
+//@desc get proucct by id
+//@route GET /api/products/:id
+//@access public
 const getProductById = asyncHanlder(async (req, res) => {
   const { id } = req.params
   const product = await Product.findById(id)

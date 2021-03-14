@@ -16,7 +16,13 @@ import {
   USER_LIST_REQUEST,
   USER_LIST_SUCCESS,
   USER_LIST_FAIL,
-  USER_LIST_RESET
+  USER_LIST_RESET,
+  USER_DELETE_REQUEST,
+  USER_DELETE_SUCCESS,
+  USER_DELETE_FAIL,
+  USER_UPDATE_REQUEST,
+  USER_UPDATE_SUCCESS,
+  USER_UPDATE_FAIL
 } from '../constants/UserConstants'
 import { ORDER_LIST_MY_RESET } from '../constants/OrderConstants'
 
@@ -121,7 +127,6 @@ export const getUserProfile = () => async (dispatch, getState) => {
 
   const config = {
     headers: {
-      'Content-Type': 'application/json',
       Authorization: `Bearer ${userInfo.token}`
     }
   }
@@ -151,7 +156,6 @@ export const getAllUsers = () => async (dispatch, getState) => {
 
   const config = {
     headers: {
-      'Content-Type': 'application/json',
       Authorization: `Bearer ${userInfo.token}`
     }
   }
@@ -161,6 +165,92 @@ export const getAllUsers = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: USER_LIST_FAIL,
+      payload:
+        error.response && error.response.data.err
+          ? error.response.data.err
+          : error.message,
+      status: error.response.status
+    })
+  }
+}
+
+export const deleteUser = id => async (dispatch, getState) => {
+  dispatch({ type: USER_DELETE_REQUEST })
+  const {
+    userLogin: { userInfo }
+  } = getState()
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${userInfo.token}`
+    }
+  }
+
+  try {
+    await axios.delete(`/users/${id}`, config)
+    dispatch({ type: USER_DELETE_SUCCESS })
+  } catch (error) {
+    dispatch({
+      type: USER_DELETE_FAIL,
+      payload:
+        error.response && error.response.data.err
+          ? error.response.data.err
+          : error.message,
+      status: error.response.status
+    })
+  }
+}
+
+export const updateUserProfileById = (id, user) => async (
+  dispatch,
+  getState
+) => {
+  dispatch({ type: USER_UPDATE_REQUEST })
+  const {
+    userLogin: { userInfo }
+  } = getState()
+
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${userInfo.token}`
+    }
+  }
+  try {
+    const { data } = await axios.put(`/users/${id}`, user, config)
+    dispatch({ type: USER_UPDATE_SUCCESS })
+    dispatch({ type: USER_PROFILE_DETAILS_SUCCESS, payload: data })
+  } catch (error) {
+    console.log(error)
+    dispatch({
+      type: USER_UPDATE_FAIL,
+      payload:
+        error.response && error.response.data.err
+          ? error.response.data.err
+          : error.message
+    })
+  }
+}
+
+export const getUserProfileById = id => async (dispatch, getState) => {
+  dispatch({ type: USER_PROFILE_DETAILS_REQUEST })
+  const {
+    userLogin: { userInfo }
+  } = getState()
+
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${userInfo.token}`
+    }
+  }
+
+  try {
+    const { data } = await axios.get(`/users/${id}`, config)
+    dispatch({ type: USER_PROFILE_DETAILS_SUCCESS, payload: data })
+  } catch (error) {
+    dispatch({
+      type: USER_PROFILE_DETAILS_FAIL,
       payload:
         error.response && error.response.data.err
           ? error.response.data.err

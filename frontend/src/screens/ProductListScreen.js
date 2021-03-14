@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { Container, Table, Button } from 'react-bootstrap'
-import { getAllUsers } from '../actions/UserActions'
+import { getProducts } from '../actions/ProductActions'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faTimes,
@@ -11,7 +11,6 @@ import {
   faTrash
 } from '@fortawesome/free-solid-svg-icons'
 import Loader from '../components/Loader'
-import { deleteUser } from '../actions/UserActions'
 import Message from '../components/Message'
 
 const trashStyle = {
@@ -19,32 +18,30 @@ const trashStyle = {
   marginLeft: '5px'
 }
 
-const UserListScreen = ({ history }) => {
+const ProductListScreen = ({ history }) => {
   const dispatch = useDispatch()
   const { userInfo } = useSelector(state => state.userLogin)
 
-  const userList = useSelector(state => state.userList)
-  const { users, loading } = userList
-
-  const userDelete = useSelector(state => state.userDelete)
-  const { success, error } = userDelete
+  const productList = useSelector(state => state.productList)
+  const { products, loading, error } = productList
 
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
-      dispatch(getAllUsers())
+      dispatch(getProducts())
     } else {
       history.push('/login')
     }
-  }, [userInfo, history, dispatch, success, error])
+  }, [userInfo, history, dispatch])
 
-  const handleDeleteUser = id => {
-    dispatch(deleteUser(id))
+  const handleDeleteProduct = id => {
+    // dispatch(deleteUser(id))
+    console.log('dziala')
   }
 
   return (
     <Container>
       {error && <Message variant='danger'>{error}</Message>}
-      <h1>Użytkownicy</h1>
+      <h1>Produkty</h1>
       {loading ? (
         <Loader />
       ) : (
@@ -52,36 +49,29 @@ const UserListScreen = ({ history }) => {
           <thead>
             <tr>
               <th>ID</th>
-              <th>Imię</th>
-              <th>Email</th>
-              <th>Admin</th>
+              <th>Nazwa</th>
+              <th>Cena</th>
+              <th>Kategoria</th>
+              <th>Marka</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
-            {users.map(user => (
-              <tr key={user._id}>
-                <td>{user._id}</td>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>
-                  {user.isAdmin ? (
-                    <FontAwesomeIcon
-                      icon={faCheck}
-                      style={{ color: 'green' }}
-                    />
-                  ) : (
-                    <FontAwesomeIcon icon={faTimes} style={{ color: 'red' }} />
-                  )}
-                </td>
+            {products.map(product => (
+              <tr key={product._id}>
+                <td>{product._id}</td>
+                <td>{product.name}</td>
+                <td>{product.price}</td>
+                <td>{product.category}</td>
+                <td>{product.brand}</td>
                 <td className='d-flex justify-content-center align-items-center'>
-                  <LinkContainer to={`/admin/users/${user._id}/edit`}>
+                  <LinkContainer to={`/admin/products/${product._id}/edit`}>
                     <Button variant='alert'>
                       <FontAwesomeIcon size='xs' icon={faEdit} />
                     </Button>
                   </LinkContainer>
                   <Button
-                    onClick={() => handleDeleteUser(user._id)}
+                    onClick={() => handleDeleteProduct(product._id)}
                     variant='danger'
                     style={trashStyle}
                   >
@@ -97,4 +87,4 @@ const UserListScreen = ({ history }) => {
   )
 }
 
-export default UserListScreen
+export default ProductListScreen

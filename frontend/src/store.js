@@ -12,7 +12,9 @@ import {
   userRegisterReducer,
   userUpdateProfileReducer,
   userProfileReducer,
-  userListReducer
+  userListReducer,
+  userDeleteReducer,
+  userUpdateReducer
 } from './reducers/UserReducers'
 import { userLogout } from './actions/UserActions'
 import {
@@ -34,7 +36,9 @@ const reducers = combineReducers({
   userProfile: userProfileReducer,
   orderPay: orderPayReducer,
   orderListMy: orderListMyReducer,
-  userList: userListReducer
+  userList: userListReducer,
+  userDelete: userDeleteReducer,
+  userUpdate: userUpdateReducer
 })
 
 const initialUserInfo = JSON.parse(localStorage.getItem('userInfo'))

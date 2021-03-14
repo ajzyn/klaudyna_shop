@@ -29,7 +29,7 @@ const ProductDetailsScreen = ({ match, history }) => {
     return () => {
       dispatch({ type: PRODUCT_DETAILS_RESET })
     }
-  }, [dispatch, match])
+  }, [dispatch, match.params.id])
 
   const handleAddToCart = () => {
     history.push(`/cart/${match.params.id}?qty=${qty}`)

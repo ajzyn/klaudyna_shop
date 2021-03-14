@@ -70,8 +70,6 @@ const OrderScreen = ({ history, match }) => {
   const successPaymentHandler = (paymentResult, data) => {
     dispatch(payOrder(id, paymentResult))
   }
-  console.log(history)
-  console.log(match)
   return (
     <Container>
       <Button
