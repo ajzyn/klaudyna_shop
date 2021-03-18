@@ -60,11 +60,11 @@ export const userRegister = loginData => async (dispatch, getState) => {
       }
     }
     const { data } = await axios.post('/users', loginData, options)
-    dispatch({ type: USER_REGISTER_SUCCESS, payload: data })
+    dispatch({ type: USER_REGISTER_SUCCESS })
     dispatch({ type: USER_LOGIN_SUCCESS, payload: data })
     localStorage.setItem(
       'userInfo',
-      JSON.stringify(getState().userRegister.userInfo)
+      JSON.stringify(getState().userLogin.userInfo)
     )
   } catch (error) {
     dispatch({
@@ -81,10 +81,11 @@ export const userLogout = () => (dispatch, getState) => {
   dispatch({ type: USER_LOGOUT })
   dispatch({ type: ORDER_LIST_MY_RESET })
   dispatch({ type: USER_LIST_RESET })
-  localStorage.setItem(
-    'userInfo',
-    JSON.stringify(getState().userLogin.userInfo)
-  )
+  localStorage.removeItem('userInfo')
+  localStorage.removeItem('__paypal_storage__')
+  localStorage.removeItem('cart')
+  localStorage.removeItem('shippingAddress')
+  localStorage.removeItem('paymentMethod')
 }
 
 export const updateUserProfile = updatedData => async (dispatch, getState) => {

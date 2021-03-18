@@ -12,7 +12,7 @@ import { USER_REGISTER_RESET } from '../constants/UserConstants'
 
 const RegisterScreen = ({ location, history }) => {
   const dispatch = useDispatch()
-  const { loading, error } = useSelector(state => state.userRegister)
+  const { loading, error, success } = useSelector(state => state.userRegister)
   const { userInfo } = useSelector(state => state.userLogin)
 
   const redirect = location.search
@@ -20,7 +20,7 @@ const RegisterScreen = ({ location, history }) => {
     : ''
 
   useEffect(() => {
-    if (userInfo) {
+    if (userInfo && success) {
       if (redirect) {
         history.push(`/${redirect}`)
       } else {
@@ -28,7 +28,7 @@ const RegisterScreen = ({ location, history }) => {
       }
     }
     return () => dispatch({ type: USER_REGISTER_RESET })
-  }, [location, history, dispatch, redirect, userInfo])
+  }, [location, history, dispatch, redirect, userInfo, success])
 
   const formik = useFormik({
     initialValues: {
@@ -64,7 +64,9 @@ const RegisterScreen = ({ location, history }) => {
           password: values.registerPassword
         })
       )
-      resetForm()
+      if (!success) {
+        resetForm()
+      }
     }
   })
 
@@ -140,7 +142,7 @@ const RegisterScreen = ({ location, history }) => {
                 </Form.Control.Feedback>
               )}
           </Form.Group>
-          <Button type='submit'>Zaloguj</Button>
+          <Button type='submit'>Zarejestruj</Button>
         </Form>
         <div className='py-3'>
           Masz konto?{' '}

@@ -57,11 +57,11 @@ export const userRegisterReducer = (
     case USER_REGISTER_REQUEST:
       return { ...state, loading: true }
     case USER_REGISTER_SUCCESS:
-      return { userInfo: payload, loading: false }
+      return { success: true, loading: false }
     case USER_REGISTER_FAIL:
       return { error: payload, loading: false }
     case USER_REGISTER_RESET:
-      return { userInfo: {} }
+      return { ...state, error: '' }
     default:
       return { ...state }
   }

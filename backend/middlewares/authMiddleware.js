@@ -13,7 +13,6 @@ export const protect = asyncHandler(async (req, res, next) => {
       const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
       const user = await User.findById(decoded._id).select('-password')
-
       req.user = user
       next()
     } catch (error) {

@@ -51,11 +51,11 @@ const Header = () => {
                   }}
                 >
                   <LinkContainer to='/profile'>
-                    <Dropdown.Item eventKey='1'>Profil</Dropdown.Item>
+                    <Dropdown.Item eventKey='4'>Profil</Dropdown.Item>
                   </LinkContainer>
                   <Dropdown.Item
                     onClick={() => dispatch(userLogout())}
-                    eventKey='2'
+                    eventKey='5'
                     active={false}
                   >
                     Wyloguj
@@ -68,10 +68,10 @@ const Header = () => {
                         <Dropdown.Item eventKey='1'>Zamówienia</Dropdown.Item>
                       </LinkContainer>
                       <LinkContainer to='/admin/users'>
-                        <Dropdown.Item eventKey='1'>Użytkownicy</Dropdown.Item>
+                        <Dropdown.Item eventKey='2'>Użytkownicy</Dropdown.Item>
                       </LinkContainer>
                       <LinkContainer to='/admin/products'>
-                        <Dropdown.Item eventKey='1'>Produkty</Dropdown.Item>
+                        <Dropdown.Item eventKey='3'>Produkty</Dropdown.Item>
                       </LinkContainer>
                     </>
                   )}

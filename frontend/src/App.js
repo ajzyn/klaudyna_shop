@@ -27,6 +27,8 @@ import OrderScreen from './screens/OrderScreen'
 import UserListScreen from './screens/UserListScreen'
 import UserEditScreen from './screens/UserEditScreen'
 import ProductListScreen from './screens/ProductListScreen'
+import EditProductSceen from './screens/EditProductSceen'
+import OrderListScreen from './screens/OrderListScreen'
 
 function App() {
   const { userInfo } = useSelector(state => state.userLogin)
@@ -48,9 +50,17 @@ function App() {
           <Route path='/placeorder' component={PlaceOrderScreen} />
           <Route path='/order/:id' component={OrderScreen} />
           <Route path='/admin/products' component={ProductListScreen} />
+          <Route path='/admin/product/:id/edit' component={EditProductSceen} />
           <Route path='/admin/users' component={UserListScreen} exact />
           <Route path='/admin/users/:id/edit' component={UserEditScreen} />
+          <Route path='/admin/orders' component={OrderListScreen} />
           <Route render={() => <Redirect to='/' />}></Route>
+          {/* <Route
+            {...rest}
+            render={props =>
+              userInfo ? <Component {...props} /> : <Redirect to='/logout' />
+            }
+          /> */}
         </Switch>
       </main>
       <Footer />

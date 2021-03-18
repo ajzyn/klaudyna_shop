@@ -145,7 +145,7 @@ const ProfileScreen = ({ history }) => {
                       )}
                     </td>
                     <td>
-                      {order.idDelivered ? (
+                      {order.isDelivered ? (
                         <FontAwesomeIcon
                           icon={faCheck}
                           style={{ color: 'green' }}

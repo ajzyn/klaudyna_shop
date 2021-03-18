@@ -25,11 +25,12 @@ const CartScreen = ({ match, location, history }) => {
     ? Number(location.search.slice(location.search.indexOf('=') + 1))
     : 1
   const productId = match.params.id
+
   useEffect(() => {
     if (productId) {
       dispatch(AddToCart(productId, qty))
     }
-  }, [dispatch, match, location, history])
+  }, [dispatch, location, history, productId, qty])
 
   const handleRemoveProduct = id => {
     dispatch(RemoveFromCart(id))
@@ -43,6 +44,14 @@ const CartScreen = ({ match, location, history }) => {
 
   return (
     <Container>
+      <Row>
+        <Col>
+          <Button onClick={() => history.goBack()}>Powrót</Button>
+        </Col>
+        <Col>
+          <Button onClick={() => history.push('/')}>Kontynuuj zakupy</Button>
+        </Col>
+      </Row>
       <h1>Koszyk</h1>
       {loading ? (
         <Loader />
@@ -61,10 +70,11 @@ const CartScreen = ({ match, location, history }) => {
           <Col md='8'>
             <ListGroup variant='flush'>
               {cartItems.map(product => (
-                <ListGroup.Item key={product.id}>
+                <ListGroup.Item key={product.product}>
                   <Row className='cartscreen-row'>
                     <Col md='3'>
                       <Image
+                        fluid
                         src={`/images/${product.image}`}
                         className='cartscreen-image'
                       />

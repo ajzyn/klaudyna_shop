@@ -14,10 +14,13 @@ import useCheckAuthorization from '../hooks/useCheckAuthorization'
 import Message from '../components/Message'
 import '../styles/cartscreen.scss'
 import Loader from '../components/Loader'
-import { getOrder, payOrder } from '../actions/OrderActions'
+import { getOrder, payOrder, markAsSent } from '../actions/OrderActions'
 import axios from 'axios'
 import { PayPalButton } from 'react-paypal-button-v2'
-import { ORDER_PAY_RESET } from '../constants/OrderConstants'
+import {
+  ORDER_PAY_RESET,
+  ORDER_IS_SENT_RESET
+} from '../constants/OrderConstants'
 
 const ColStyle = {
   margin: 'auto'
@@ -29,11 +32,20 @@ const OrderScreen = ({ history, match }) => {
   const dispatch = useDispatch()
   const { id } = match.params
 
+  const { userInfo } = useSelector(state => state.userLogin)
+
   const orderDetails = useSelector(state => state.orderDetails)
   const { order, loading, error } = orderDetails
 
   const orderPay = useSelector(state => state.orderPay)
   const { loading: loadingPay, success: successPay } = orderPay
+
+  const orderDeliver = useSelector(state => state.orderDeliver)
+  const {
+    loading: loadingDeliver,
+    success: successDeliver,
+    error: errorDeliver
+  } = orderDeliver
 
   useEffect(() => {
     const addPayPalScript = async () => {
@@ -47,8 +59,9 @@ const OrderScreen = ({ history, match }) => {
       }
       document.body.appendChild(script)
     }
-    if (!order || order._id !== id || successPay) {
+    if (!order || order._id !== id || successPay || successDeliver) {
       dispatch({ type: ORDER_PAY_RESET })
+      dispatch({ type: ORDER_IS_SENT_RESET })
       dispatch(getOrder(id))
     } else if (!order.isPaid) {
       if (!window.paypal) {
@@ -57,9 +70,10 @@ const OrderScreen = ({ history, match }) => {
         setSdkReady(true)
       }
     }
-  }, [dispatch, id, successPay, order])
+  }, [dispatch, id, successPay, order, userInfo, successDeliver, sdkReady])
 
   useCheckAuthorization(history)
+
   if (!loading && !error) {
     const addDecimals = num => (Math.round(num * 100) / 100).toFixed(2)
     order.itemsPrice = addDecimals(
@@ -104,14 +118,18 @@ const OrderScreen = ({ history, match }) => {
                     {order.shippingAddress.city},{order.shippingAddress.country}
                   </p>
                   <Message variant={order.isDelivered ? 'success' : 'danger'}>
-                    {order.isDelivered ? order.deliveredAt : 'Nie dostarczono'}
+                    {order.isDelivered
+                      ? 'Dostarczono ' + order.deliveredAt.substring(0, 10)
+                      : 'Nie dostarczono'}
                   </Message>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <h4>Metoda płatności</h4>
                   <p>Metoda płatności: {order.paymentMethod}</p>
                   <Message variant={order.isPaid ? 'success' : 'danger'}>
-                    {order.isPaid ? order.paidAt : 'Brak płatności'}
+                    {order.isPaid
+                      ? 'Zapłacono ' + order.paidAt.substring(0, 10)
+                      : 'Brak płatności'}
                   </Message>
                 </ListGroup.Item>
                 <ListGroup.Item>
@@ -120,13 +138,14 @@ const OrderScreen = ({ history, match }) => {
                     {order.cart.map(cartItem => (
                       <ListGroup.Item key={cartItem._id}>
                         <Row>
-                          <Col md='2' style={ColStyle}>
+                          <Col md='3' style={ColStyle}>
                             <Image
+                              fluid
                               className='cartscreen-image'
                               src={`/images${cartItem.image}`}
                             />
                           </Col>
-                          <Col style={ColStyle} md='7'>
+                          <Col style={ColStyle} md='6'>
                             {cartItem.name}
                           </Col>
                           <Col style={ColStyle} md='3'>
@@ -174,20 +193,31 @@ const OrderScreen = ({ history, match }) => {
                       <Col>{order.totalPrice} zł</Col>
                     </Row>
                   </ListGroup.Item>
-                  {!order.isPaid && (
-                    <ListGroup.Item>
-                      {loadingPay && <Loader />}
-                      {!sdkReady ? (
-                        <Loader />
-                      ) : (
-                        <PayPalButton
-                          currency='PLN'
-                          amount={order.totalPrice}
-                          onSuccess={successPaymentHandler}
-                        />
+                  {userInfo && userInfo.isAdmin
+                    ? !order.isDelivered && (
+                        <ListGroup.Item>
+                          <Button
+                            onClick={() => dispatch(markAsSent(order._id))}
+                            variant='secondary'
+                          >
+                            Oznacz jako wysłane
+                          </Button>
+                        </ListGroup.Item>
+                      )
+                    : !order.isPaid && (
+                        <ListGroup.Item>
+                          {loadingPay && <Loader />}
+                          {!sdkReady ? (
+                            <Loader />
+                          ) : (
+                            <PayPalButton
+                              currency='PLN'
+                              amount={order.totalPrice}
+                              onSuccess={successPaymentHandler}
+                            />
+                          )}
+                        </ListGroup.Item>
                       )}
-                    </ListGroup.Item>
-                  )}
                 </Card>
               </ListGroup>
             </Col>

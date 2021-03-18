@@ -16,6 +16,7 @@ import { Redirect } from 'react-router-dom'
 import '../styles/cartscreen.scss'
 import { createOrder } from '../actions/OrderActions'
 import Loader from '../components/Loader'
+import { ORDER_CREATE_RESET } from '../constants/OrderConstants'
 
 const ColStyle = {
   margin: 'auto'
@@ -29,7 +30,10 @@ const PlaceOrderScreen = ({ history }) => {
   const { loading, error: orderError, success, orderId } = orderCreate
 
   useEffect(() => {
-    if (success) history.push(`/order/${orderId}`)
+    if (success) {
+      history.push(`/order/${orderId}`)
+      dispatch({ type: ORDER_CREATE_RESET })
+    }
   }, [success, history, orderId])
 
   useCheckAuthorization(history)
@@ -78,13 +82,14 @@ const PlaceOrderScreen = ({ history }) => {
                     {cartItems.map(cartItem => (
                       <ListGroup.Item key={cartItem.product}>
                         <Row>
-                          <Col md='2' style={ColStyle}>
+                          <Col md='4' style={ColStyle}>
                             <Image
+                              fluid
                               className='cartscreen-image'
                               src={`/images${cartItem.image}`}
                             />
                           </Col>
-                          <Col style={ColStyle} md='7'>
+                          <Col style={ColStyle} md='5'>
                             {cartItem.name}
                           </Col>
                           <Col style={ColStyle} md='3'>

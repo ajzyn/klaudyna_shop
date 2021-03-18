@@ -4,7 +4,10 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import { logger } from 'redux-logger'
 import {
   productListReducer,
-  productDetailsReducer
+  productDetailsReducer,
+  productDeleteReducer,
+  productUpdateReducer,
+  productCreateReducer
 } from './reducers/ProductReducers'
 import { cartReducer } from './reducers/CartReducers'
 import {
@@ -21,7 +24,9 @@ import {
   orderCreateReducer,
   orderDetailsReducer,
   orderPayReducer,
-  orderListMyReducer
+  orderListMyReducer,
+  orderListReducer,
+  orderDeliverReducer
 } from './reducers/OrderReducer'
 
 const reducers = combineReducers({
@@ -36,9 +41,14 @@ const reducers = combineReducers({
   userProfile: userProfileReducer,
   orderPay: orderPayReducer,
   orderListMy: orderListMyReducer,
+  orderList: orderListReducer,
   userList: userListReducer,
   userDelete: userDeleteReducer,
-  userUpdate: userUpdateReducer
+  userUpdate: userUpdateReducer,
+  productDelete: productDeleteReducer,
+  productUpdate: productUpdateReducer,
+  productCreate: productCreateReducer,
+  orderDeliver: orderDeliverReducer
 })
 
 const initialUserInfo = JSON.parse(localStorage.getItem('userInfo'))
@@ -79,7 +89,7 @@ const authInterceptor = ({ dispatch }) => next => action => {
   next(action)
 }
 
-const middleware = [thunk, authInterceptor]
+const middleware = [thunk, authInterceptor, logger]
 
 const store = createStore(
   reducers,

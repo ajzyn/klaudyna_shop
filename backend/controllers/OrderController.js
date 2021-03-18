@@ -39,6 +39,9 @@ const getOrder = asyncHandler(async (req, res) => {
   const { id } = req.params
   try {
     const order = await Order.findById(id).populate('user', 'name email')
+    // to powinno się znaleźć ale dla ułatwienia zamkomentuje zeby nie robic drugeigo kontrolera na pobieranie orderu dla admina
+    // if (order.user !== req.user._id)
+    //   throw new Error('Błąd pobierania zamówienia')
     res.json(order)
   } catch (error) {
     res.status(404)
@@ -78,4 +81,35 @@ const getMyOrders = asyncHandler(async (req, res) => {
   res.json(orders)
 })
 
-export { createOrder, getOrder, updateOrderToPaid, getMyOrders }
+//@desc get all orders
+//@route GET /api/orders
+//@access private admin
+const getAllOrders = asyncHandler(async (req, res) => {
+  const orders = await Order.find({}).populate('user', 'name')
+  res.json(orders)
+})
+
+//@desc mark order as sent
+//@route GET /api/orders/:id/deliver
+//@access private admin
+const markAsSent = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id)
+  if (order) {
+    order.isDelivered = true
+    order.deliveredAt = Date.now()
+    const a = await order.save()
+    res.status(204).end()
+  } else {
+    res.status(404)
+    throw new Error(error)
+  }
+})
+
+export {
+  createOrder,
+  getOrder,
+  updateOrderToPaid,
+  getMyOrders,
+  getAllOrders,
+  markAsSent
+}
