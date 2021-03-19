@@ -7,7 +7,8 @@ import {
   productDetailsReducer,
   productDeleteReducer,
   productUpdateReducer,
-  productCreateReducer
+  productCreateReducer,
+  productCreateReviewReducer
 } from './reducers/ProductReducers'
 import { cartReducer } from './reducers/CartReducers'
 import {
@@ -48,7 +49,8 @@ const reducers = combineReducers({
   productDelete: productDeleteReducer,
   productUpdate: productUpdateReducer,
   productCreate: productCreateReducer,
-  orderDeliver: orderDeliverReducer
+  orderDeliver: orderDeliverReducer,
+  productCreateReview: productCreateReviewReducer
 })
 
 const initialUserInfo = JSON.parse(localStorage.getItem('userInfo'))
@@ -89,7 +91,7 @@ const authInterceptor = ({ dispatch }) => next => action => {
   next(action)
 }
 
-const middleware = [thunk, authInterceptor, logger]
+const middleware = [thunk, authInterceptor]
 
 const store = createStore(
   reducers,

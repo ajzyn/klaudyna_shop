@@ -14,11 +14,14 @@ import orderRoutes from './routes/OrderRoutes.js'
 import uploadRoutes from './routes/UploadRoutes.js'
 
 const app = express()
-app.use(morgan('tiny'))
-app.use(express.json())
 
 dotenv.config()
 connectDB()
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('tiny'))
+}
+
+app.use(express.json())
 
 const PORT = process.env.PORT || 5000
 

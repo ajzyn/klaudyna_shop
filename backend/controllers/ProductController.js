@@ -95,10 +95,49 @@ const createProduct = asyncHanlder(async (req, res) => {
   }
 })
 
+//@desc create new review
+//@route POST /api/products/:id/reviews
+//@access private
+const createReview = asyncHanlder(async (req, res) => {
+  const { rating, comment } = req.body
+
+  const product = await Product.findById(req.params.id)
+
+  if (product) {
+    const alreadyReviewed = product.reviews.find(
+      r => r.user.toString() === req.user._id.toString()
+    )
+    if (alreadyReviewed) {
+      res.status(400)
+      throw new Error('Produkt już skomentowany')
+    }
+
+    const review = {
+      name: req.user.name,
+      rating: Number(rating),
+      comment,
+      user: req.user._id
+    }
+    product.reviews.push(review)
+    product.numReviews = product.reviews.length
+    product.rating =
+      product.reviews.reduce((acc, item) => acc + item.rating, 0) /
+      product.numReviews
+
+    console.log(product)
+    await product.save()
+    res.status(201).end()
+  } else {
+    res.status(404)
+    throw new Error('Nie znaleziono produktu')
+  }
+})
+
 export {
   getProducts,
   getProductById,
   deleteProduct,
   updateProduct,
-  createProduct
+  createProduct,
+  createReview
 }
