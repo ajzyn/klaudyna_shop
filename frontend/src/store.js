@@ -8,7 +8,8 @@ import {
   productDeleteReducer,
   productUpdateReducer,
   productCreateReducer,
-  productCreateReviewReducer
+  productCreateReviewReducer,
+  productTopRankReducer
 } from './reducers/ProductReducers'
 import { cartReducer } from './reducers/CartReducers'
 import {
@@ -50,7 +51,8 @@ const reducers = combineReducers({
   productUpdate: productUpdateReducer,
   productCreate: productCreateReducer,
   orderDeliver: orderDeliverReducer,
-  productCreateReview: productCreateReviewReducer
+  productCreateReview: productCreateReviewReducer,
+  productTopRank: productTopRankReducer
 })
 
 const initialUserInfo = JSON.parse(localStorage.getItem('userInfo'))

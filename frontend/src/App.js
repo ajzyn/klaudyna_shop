@@ -29,6 +29,7 @@ import UserEditScreen from './screens/UserEditScreen'
 import ProductListScreen from './screens/ProductListScreen'
 import EditProductSceen from './screens/EditProductSceen'
 import OrderListScreen from './screens/OrderListScreen'
+import Galleryscreen from './screens/Galleryscreen'
 
 function App() {
   const { userInfo } = useSelector(state => state.userLogin)
@@ -38,7 +39,6 @@ function App() {
       <Header />
       <main>
         <Switch>
-          <Route path='/' exact component={HomeScreen} />
           <Route path='/product/:id' component={ProductDetailsScreen} />
           <Route path='/cart/:id?' component={CartScreen} />
           <Route path='/login' component={LoginScreen} />
@@ -49,12 +49,26 @@ function App() {
           <Route path='/payment' component={PaymentMethodScreen} />
           <Route path='/placeorder' component={PlaceOrderScreen} />
           <Route path='/order/:id' component={OrderScreen} />
-          <Route path='/admin/products' component={ProductListScreen} />
+          <Route path='/admin/products' exact component={ProductListScreen} />
+          <Route
+            path='/admin/products/page/:offset'
+            component={ProductListScreen}
+          />
           <Route path='/admin/product/:id/edit' component={EditProductSceen} />
           <Route path='/admin/users' component={UserListScreen} exact />
           <Route path='/admin/users/:id/edit' component={UserEditScreen} />
           <Route path='/admin/orders' component={OrderListScreen} />
+          <Route path='/search/:keyword' exact component={HomeScreen} />
+          <Route path='/page/:offset' exact component={HomeScreen} />
+          <Route path='/gallery' component={Galleryscreen} />
+          <Route
+            path='/search/:keyword/page/:offset'
+            exact
+            component={HomeScreen}
+          />
+          <Route path='/' exact component={HomeScreen} />
           <Route render={() => <Redirect to='/' />}></Route>
+
           {/* <Route
             {...rest}
             render={props =>

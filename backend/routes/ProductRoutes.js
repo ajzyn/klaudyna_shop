@@ -5,7 +5,8 @@ import {
   deleteProduct,
   updateProduct,
   createProduct,
-  createReview
+  createReview,
+  getTopRank
 } from '../controllers/ProductController.js'
 import { isAdmin, protect } from '../middlewares/authMiddleware.js'
 
@@ -15,6 +16,7 @@ router
   .route('/')
   .get(getProducts)
   .post(protect, isAdmin, createProduct)
+router.route('/top').get(getTopRank)
 router
   .route('/:id')
   .get(getProductById)

@@ -25,14 +25,16 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
+import Paginate from '../components/Paginate'
 
 const trashStyle = {
   padding: '0 !important',
   marginLeft: '5px'
 }
 
-const ProductListScreen = ({ history }) => {
+const ProductListScreen = ({ history, match }) => {
   const [show, setShow] = useState(false)
+  const offset = match.params.offset - 1 || 0
 
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
@@ -41,7 +43,13 @@ const ProductListScreen = ({ history }) => {
   const { userInfo } = useSelector(state => state.userLogin)
 
   const productList = useSelector(state => state.productList)
-  const { products, loading, error } = productList
+  const {
+    products,
+    loading,
+    error,
+    pages,
+    offset: productListOffset
+  } = productList
 
   const productCreate = useSelector(state => state.productCreate)
   const {
@@ -59,11 +67,11 @@ const ProductListScreen = ({ history }) => {
 
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
-      dispatch(getProducts())
+      dispatch(getProducts('', offset))
     } else {
       history.push('/login')
     }
-  }, [userInfo, history, dispatch, deleteSuccess, successCreated])
+  }, [userInfo, history, dispatch, deleteSuccess, successCreated, offset])
 
   const handleDeleteProduct = id => {
     dispatch(deleteProduct(id))
@@ -296,6 +304,7 @@ const ProductListScreen = ({ history }) => {
           </tbody>
         </Table>
       )}
+      <Paginate isAdmin={true} pages={pages} offset={productListOffset} />
     </Container>
   )
 }

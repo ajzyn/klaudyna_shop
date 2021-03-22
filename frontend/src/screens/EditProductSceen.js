@@ -15,13 +15,30 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCameraRetro } from '@fortawesome/free-solid-svg-icons'
 import '../styles/fileStyles.scss'
 import Message from '../components/Message'
+import Resizer from 'react-image-file-resizer'
 
 const EditProductSceen = ({ history, match }) => {
   const [isLoaded, setIsLoaded] = useState(false)
 
+  const resizeFile = file =>
+    new Promise(resolve => {
+      Resizer.imageFileResizer(
+        file,
+        300,
+        300,
+        'JPEG',
+        100,
+        0,
+        uri => {
+          resolve(uri)
+        },
+        'base64'
+      )
+    })
   //images
-  const [selectedImages, setSelectedImages] = useState([])
+  const [image, setImage] = useState(null)
   const [imagesError, setImagesError] = useState('')
+  const [imageUrl, setImageUrl] = useState('')
 
   const prodId = match.params.id
   const dispatch = useDispatch()
@@ -35,6 +52,7 @@ const EditProductSceen = ({ history, match }) => {
   const { loading: updateLoading, error: updateError, success } = productUpdate
 
   useEffect(() => {
+    console.log(imageUrl)
     if (!userInfo || !userInfo.isAdmin) {
       history.push('/login')
     } else {
@@ -44,65 +62,36 @@ const EditProductSceen = ({ history, match }) => {
         dispatch({ type: PRODUCT_UPDATE_RESET })
       }
     }
-  }, [history, dispatch, product, isLoaded, success])
+  }, [history, dispatch, product, isLoaded, success, imageUrl])
 
-  const uploadFileHandler = e => {
-    if (e.target.files) {
-      // const filesArray = Array.from(e.target.files).map(image =>
-      //   URL.createObjectURL(image)
-      // )
-
-      // setSelectedImages(prevImg => prevImg.concat(filesArray))
-
-      // Array.from(e.target.files).map(file => URL.revokeObjectURL(file))
-
-      setSelectedImages(e.target.files)
-      console.log(e.target.files)
+  const hadnleChange = async e => {
+    if (e.target.files[0]) {
+      try {
+        const file = e.target.files[0]
+        const image = await resizeFile(file)
+        setImage(image)
+      } catch (err) {
+        console.log(err)
+      }
     }
   }
 
-  const multipleFileUploadHandler = async () => {
-    const files = selectedImages
-    const formData = new FormData()
-
-    if (files.length) {
-      for (let i = 0; i < files.length; i++) {
-        formData.append('image', files[i])
-      }
-      const config = {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${userInfo.token}`
-        }
-      }
-      // const config = {
-      //   headers: {
-      //     accept: 'application/json',
-      //     'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
-      //   }
-      // }
-      try {
-        const { data } = await axios.post('/upload', formData, config)
-        if (data.error) {
-          if ('LIMIT_FILE_SIZE' === data.error.code) {
-            setImagesError('Rozmiar maks 2MB')
-          } else if ('LIMIT_UNEXPECTED_FILE' === data.error.code) {
-            setImagesError('Makysmalnie 4 zdjęcia')
-          } else {
-            setImagesError(data.error)
-          }
-        } else {
-          // Success
-          let fileName = data
-          console.log('fileName', fileName)
-          // pokaz zdjęcia
-        }
-      } catch (error) {
-        setImagesError(error.toString())
-      }
-    } else {
-      setImagesError('Proszę wybrać zdjęcia')
-    }
+  const handleUpload = async () => {
+    // const uploadTask = storage.ref(`images/${image.name}`).put(image)
+    // uploadTask.on(
+    //   'state_changed',
+    //   snapshot => {},
+    //   error => {
+    //     setImagesError(error)
+    //   },
+    //   () => {
+    //     storage
+    //       .ref('images')
+    //       .child(image.name)
+    //       .getDownloadURL()
+    //       .then(url => setImageUrl(url))
+    //   }
+    // )
   }
 
   const renderPhotos = source => {
@@ -151,7 +140,7 @@ const EditProductSceen = ({ history, match }) => {
         descriptiom: values.productDescription,
         brand: values.productBrand
       }
-      dispatch(updateProduct(prodId, product))
+      // dispatch(updateProduct(prodId, product))
     },
     enableReinitialize: true
   })
@@ -196,18 +185,13 @@ const EditProductSceen = ({ history, match }) => {
             </Form.Group>
             <Form.Group>
               <Form.Label>Edytuj zdjęcia</Form.Label>
-              <input
-                type='file'
-                id='file'
-                multiple
-                onChange={uploadFileHandler}
-              />
+              <input type='file' id='file' multiple onChange={hadnleChange} />
               <div className='label-holder'>
                 <label htmlFor='file' className='label'>
                   <Button as='div'>
                     <FontAwesomeIcon icon={faCameraRetro} />
                   </Button>
-                  <Button onClick={multipleFileUploadHandler}>Wyślij</Button>
+                  <Button onClick={handleUpload}>Wyślij</Button>
                 </label>
               </div>
               {imagesError && (

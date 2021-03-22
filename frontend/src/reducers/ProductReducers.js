@@ -21,7 +21,10 @@ import {
   PRODUCT_CREATE_REVIEW_REQUEST,
   PRODUCT_CREATE_REVIEW_SUCCESS,
   PRODUCT_CREATE_REVIEW_FAIL,
-  PRODUCT_CREATE_REVIEW_RESET
+  PRODUCT_CREATE_REVIEW_RESET,
+  PRODUCT_TOP_RANK_REQUEST,
+  PRODUCT_TOP_RANK_SUCCESS,
+  PRODUCT_TOP_RANK_FAIL
 } from '../constants/ProductConstants'
 
 export const productListReducer = (
@@ -32,7 +35,12 @@ export const productListReducer = (
     case PRODUCT_LIST_REQUEST:
       return { ...state, loading: true }
     case PRODUCT_LIST_SUCCESS:
-      return { loading: false, products: payload }
+      return {
+        loading: false,
+        products: payload.products,
+        pages: payload.pages,
+        offset: payload.offset
+      }
     case PRODUCT_LIST_FAIL:
       return { loading: false, error: payload }
     default:
@@ -114,6 +122,22 @@ export const productCreateReviewReducer = (state = {}, { type, payload }) => {
       return { loading: false, error: payload, success: false }
     case PRODUCT_CREATE_REVIEW_RESET:
       return {}
+    default:
+      return state
+  }
+}
+
+export const productTopRankReducer = (
+  state = { products: [] },
+  { type, payload }
+) => {
+  switch (type) {
+    case PRODUCT_TOP_RANK_REQUEST:
+      return { loading: true }
+    case PRODUCT_TOP_RANK_SUCCESS:
+      return { loading: false, success: true, products: payload }
+    case PRODUCT_TOP_RANK_FAIL:
+      return { loading: false, error: payload, success: false }
     default:
       return state
   }

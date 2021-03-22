@@ -1,14 +1,31 @@
 import asyncHanlder from 'express-async-handler'
 import Product from '../models/ProductModel.js'
+import qs from 'qs'
 
+//przy filtrowaniu obiektów i sortowaniu ich sprawdzo odincek
+// https://www.youtube.com/watch?v=myrNOnzfk9I&list=PLjHmWifVUNMLjh1nP3p-U0VYrk_9aXVjE&index=8
 //@desc get all products
 //@route GET /api/products
 //@access public
 const getProducts = asyncHanlder(async (req, res) => {
-  //przy filtrowaniu obiektów i sortowaniu ich sprawdzo odincek
-  // https://www.youtube.com/watch?v=myrNOnzfk9I&list=PLjHmWifVUNMLjh1nP3p-U0VYrk_9aXVjE&index=8
-  const products = await Product.find({})
-  res.json(products)
+  const query = qs.parse(req.query)
+  const offset = Number(query.offset) || 0
+  const pageSize = 2
+
+  let searchFilter = query.keyword
+    ? {
+        $text: {
+          $search: query.keyword
+        }
+      }
+    : {}
+
+  const products = await Product.find(searchFilter)
+    .skip(offset * pageSize)
+    .limit(pageSize)
+  const count = await Product.find(searchFilter).countDocuments()
+
+  res.json({ products, offset, pages: Math.ceil(count / pageSize) })
 })
 
 //@desc get proucct by id
@@ -133,11 +150,26 @@ const createReview = asyncHanlder(async (req, res) => {
   }
 })
 
+//@desc get top rank product
+//@route GET /api/products/top
+//@access public
+const getTopRank = asyncHanlder(async (req, res) => {
+  const products = await Product.find({})
+    .sort({ rating: -1 })
+    .limit(3)
+  if (products) {
+    res.json(products)
+  } else {
+    throw new Error('Nie udało się pobrać produktów')
+  }
+})
+
 export {
   getProducts,
   getProductById,
   deleteProduct,
   updateProduct,
   createProduct,
-  createReview
+  createReview,
+  getTopRank
 }

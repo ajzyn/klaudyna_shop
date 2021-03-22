@@ -1,0 +1,11 @@
+@import './custom.scss';
+
+.carousel-item {
+  .carousel-caption {
+    color: #444;
+  }
+  img {
+    min-height: 300px;
+    object-fit: contain;
+  }
+}

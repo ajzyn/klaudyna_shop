@@ -1,5 +1,6 @@
 import React from 'react'
 import SearchBox from './SearchBox'
+import { Route } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { Navbar, Nav, Image, Container, Dropdown } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
@@ -25,7 +26,7 @@ const Header = () => {
               <Image src='/logo.png' fluid className='header-logo' />
             </LinkContainer>
           </Navbar.Brand>
-          <SearchBox />
+          <Route render={({ history }) => <SearchBox history={history} />} />
           <Nav className='ml-auto'>
             <LinkContainer to='/cart'>
               <Nav.Link>
