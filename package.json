@@ -10,7 +10,8 @@
     "server": "nodemon backend/server.js",
     "dev": "concurrently \"npm run server\" \"cd frontend && npm start\" ",
     "data:destroy": "node backend/seeder.js -d",
-    "data:import": "node backend/seeder.js"
+    "data:import": "node backend/seeder.js",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
   },
   "keywords": [],
   "author": "",
