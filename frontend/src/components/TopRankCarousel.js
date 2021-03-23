@@ -21,7 +21,7 @@ const TopRankCarousel = () => {
           <Carousel.Item key={product._id}>
             <img
               className='d-block w-100'
-              src={`/images/${product.image}`}
+              src={product.image}
               alt='product image'
             />
             <Carousel.Caption>

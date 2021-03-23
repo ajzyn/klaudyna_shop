@@ -8,7 +8,8 @@ import {
   Row,
   Col,
   Modal,
-  Form
+  Form,
+  Image
 } from 'react-bootstrap'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
@@ -26,6 +27,8 @@ import {
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import Paginate from '../components/Paginate'
+import resizeFile from '../utils/resizer'
+import ProgressBar from '../components/ProgressBar'
 
 const trashStyle = {
   padding: '0 !important',
@@ -36,7 +39,15 @@ const ProductListScreen = ({ history, match }) => {
   const [show, setShow] = useState(false)
   const offset = match.params.offset - 1 || 0
 
-  const handleClose = () => setShow(false)
+  //imgs
+  const [file, setFile] = useState(null)
+  const [uploadError, setUploadError] = useState('')
+  const [uploadedImage, setUploadedImage] = useState(null)
+
+  const handleClose = () => {
+    setUploadedImage(null)
+    return setShow(false)
+  }
   const handleShow = () => setShow(true)
 
   const dispatch = useDispatch()
@@ -77,6 +88,22 @@ const ProductListScreen = ({ history, match }) => {
     dispatch(deleteProduct(id))
   }
 
+  const hadnleChange = async e => {
+    const selected = e.target.files[0]
+    const types = ['image/png', 'image/jpeg', 'image.jpg']
+    if (selected && types.includes(selected.type)) {
+      try {
+        const image = await resizeFile(selected)
+        setFile(image)
+        setUploadError('')
+      } catch (err) {
+        setUploadError(err)
+      }
+    } else {
+      setUploadError('Proszę wybrać obraz typu png,jpeg,jpg')
+    }
+  }
+
   const formik = useFormik({
     initialValues: {
       productName: '',
@@ -107,17 +134,23 @@ const ProductListScreen = ({ history, match }) => {
         .required('Pole wymagane')
     }),
     onSubmit: values => {
-      const product = {
-        name: values.productName,
-        category: values.productCategory,
-        image: '/srodek_do_mycia_zmywarek.png',
-        countInStock: values.productCountInStock,
-        price: values.productPrice,
-        description: values.productDescription,
-        brand: values.productBrand
+      if (!uploadedImage || uploadError) {
+        setUploadError('Proszę wybrać zdjęcie')
+      } else {
+        const product = {
+          name: values.productName,
+          category: values.productCategory,
+          image: uploadedImage.url,
+          countInStock: values.productCountInStock,
+          price: values.productPrice,
+          description: values.productDescription,
+          brand: values.productBrand
+        }
+        dispatch(createProduct(product))
+        formik.resetForm()
+        handleClose()
+        setUploadError('')
       }
-      dispatch(createProduct(product))
-      formik.resetForm()
     },
     enableReinitialize: true
   })
@@ -166,30 +199,35 @@ const ProductListScreen = ({ history, match }) => {
                 </Form.Group>
                 <Form.Group>
                   <Form.Label>Edytuj zdjęcia</Form.Label>
-                  <input
-                    type='file'
-                    id='file'
-                    multiple
-                    // onChange={uploadFileHandler}
-                  />
+                  <input type='file' id='file' onChange={hadnleChange} />
                   <div className='label-holder'>
                     <label htmlFor='file' className='label'>
                       <Button as='div'>
                         <FontAwesomeIcon icon={faCameraRetro} />
                       </Button>
-                      <Button
-                      // onClick={multipleFileUploadHandler}
-                      >
-                        Wyślij
-                      </Button>
+                      {/* <Button onClick={handleUpload}>Wyślij</Button> */}
                     </label>
                   </div>
-                  {/* {imagesError && (
+                  {uploadedImage && uploadedImage.error && (
                     <Form.Control.Feedback className='d-block' type='invalid'>
-                      {imagesError}
+                      {uploadedImage.error}
                     </Form.Control.Feedback>
-                  )} */}
-                  {/* <div className='result'>{renderPhotos(selectedImages)}</div> */}
+                  )}
+                  {uploadError && (
+                    <Form.Control.Feedback className='d-block' type='invalid'>
+                      {uploadError}
+                    </Form.Control.Feedback>
+                  )}
+                  {file && (
+                    <ProgressBar
+                      file={file}
+                      setFile={setFile}
+                      setUploadedImage={setUploadedImage}
+                    />
+                  )}
+                  {uploadedImage && uploadedImage.url && (
+                    <Image src={uploadedImage.url} fluid />
+                  )}
                 </Form.Group>
 
                 <Form.Group>
@@ -254,9 +292,7 @@ const ProductListScreen = ({ history, match }) => {
                 </Form.Group>
 
                 <Form.Group>
-                  <Button type='submit' onClick={handleClose}>
-                    Dodaj produkt
-                  </Button>
+                  <Button type='submit'>Dodaj produkt</Button>
                 </Form.Group>
               </Form>
             </Modal.Body>

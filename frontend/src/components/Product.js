@@ -12,7 +12,7 @@ const Product = ({ product }) => {
       <Card className='card-container'>
         <Card.Img
           variant='bottom'
-          src={`/images${image}`}
+          src={image}
           className='homescreen-card-image'
         />
         <Card.Body>

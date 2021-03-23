@@ -25,7 +25,7 @@ import axios from 'axios'
 
 export const getProducts = (keyword = '', offset = '') => async dispatch => {
   dispatch({ type: PRODUCT_LIST_REQUEST })
-  const query = `/products/?keyword=${keyword}&offset=${Number(offset)}`
+  const query = `/api/products/?keyword=${keyword}&offset=${Number(offset)}`
 
   try {
     const { data } = await axios.get(query)
@@ -45,7 +45,7 @@ export const getProductDetails = id => async dispatch => {
   dispatch({ type: PRODUCT_DETAILS_REQUEST })
 
   try {
-    const { data } = await axios.get(`/products/${id}`)
+    const { data } = await axios.get(`/api/products/${id}`)
     dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data })
   } catch (error) {
     dispatch({
@@ -73,7 +73,7 @@ export const deleteProduct = id => async (dispatch, getState) => {
   }
 
   try {
-    await axios.delete(`/products/${id}`, config)
+    await axios.delete(`/api/products/${id}`, config)
     dispatch({ type: PRODUCT_DELETE_SUCCESS })
   } catch (error) {
     dispatch({
@@ -102,7 +102,7 @@ export const updateProduct = (id, product) => async (dispatch, getState) => {
   }
 
   try {
-    await axios.put(`/products/${id}`, product, config)
+    await axios.put(`/api/products/${id}`, product, config)
     dispatch({ type: PRODUCT_UPDATE_SUCCESS })
   } catch (error) {
     dispatch({
@@ -131,7 +131,7 @@ export const createProduct = product => async (dispatch, getState) => {
   }
 
   try {
-    const { data } = await axios.post(`/products`, product, config)
+    const { data } = await axios.post(`/api/products`, product, config)
     dispatch({ type: PRODUCT_CREATE_SUCCESS, payload: data })
   } catch (error) {
     dispatch({
@@ -160,7 +160,7 @@ export const createReview = (id, review) => async (dispatch, getState) => {
   }
 
   try {
-    await axios.post(`/products/${id}/reviews`, review, config)
+    await axios.post(`/api/products/${id}/reviews`, review, config)
     dispatch({ type: PRODUCT_CREATE_REVIEW_SUCCESS })
   } catch (error) {
     dispatch({
@@ -178,7 +178,7 @@ export const getTopRanked = () => async (dispatch, getState) => {
   dispatch({ type: PRODUCT_TOP_RANK_REQUEST })
 
   try {
-    const { data } = await axios.get(`/products/top`)
+    const { data } = await axios.get(`/api/products/top`)
     dispatch({ type: PRODUCT_TOP_RANK_SUCCESS, payload: data })
   } catch (error) {
     dispatch({

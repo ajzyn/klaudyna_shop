@@ -16,29 +16,15 @@ import { faCameraRetro } from '@fortawesome/free-solid-svg-icons'
 import '../styles/fileStyles.scss'
 import Message from '../components/Message'
 import Resizer from 'react-image-file-resizer'
+import ProgressBar from '../components/ProgressBar'
+import resizeFile from '../utils/resizer'
 
 const EditProductSceen = ({ history, match }) => {
   const [isLoaded, setIsLoaded] = useState(false)
-
-  const resizeFile = file =>
-    new Promise(resolve => {
-      Resizer.imageFileResizer(
-        file,
-        300,
-        300,
-        'JPEG',
-        100,
-        0,
-        uri => {
-          resolve(uri)
-        },
-        'base64'
-      )
-    })
   //images
-  const [image, setImage] = useState(null)
-  const [imagesError, setImagesError] = useState('')
-  const [imageUrl, setImageUrl] = useState('')
+  const [file, setFile] = useState(null)
+  const [uploadError, setUploadError] = useState('')
+  const [uploadedImage, setUploadedImage] = useState(null)
 
   const prodId = match.params.id
   const dispatch = useDispatch()
@@ -52,7 +38,6 @@ const EditProductSceen = ({ history, match }) => {
   const { loading: updateLoading, error: updateError, success } = productUpdate
 
   useEffect(() => {
-    console.log(imageUrl)
     if (!userInfo || !userInfo.isAdmin) {
       history.push('/login')
     } else {
@@ -62,42 +47,22 @@ const EditProductSceen = ({ history, match }) => {
         dispatch({ type: PRODUCT_UPDATE_RESET })
       }
     }
-  }, [history, dispatch, product, isLoaded, success, imageUrl])
+  }, [history, dispatch, product, isLoaded, success])
 
   const hadnleChange = async e => {
-    if (e.target.files[0]) {
+    const selected = e.target.files[0]
+    const types = ['image/png', 'image/jpeg', 'image.jpg']
+    if (selected && types.includes(selected.type)) {
       try {
-        const file = e.target.files[0]
-        const image = await resizeFile(file)
-        setImage(image)
+        const image = await resizeFile(selected)
+        setFile(image)
+        setUploadError('')
       } catch (err) {
-        console.log(err)
+        setUploadError(err)
       }
+    } else {
+      setUploadError('Proszę wybrać obraz typu png,jpeg,jpg')
     }
-  }
-
-  const handleUpload = async () => {
-    // const uploadTask = storage.ref(`images/${image.name}`).put(image)
-    // uploadTask.on(
-    //   'state_changed',
-    //   snapshot => {},
-    //   error => {
-    //     setImagesError(error)
-    //   },
-    //   () => {
-    //     storage
-    //       .ref('images')
-    //       .child(image.name)
-    //       .getDownloadURL()
-    //       .then(url => setImageUrl(url))
-    //   }
-    // )
-  }
-
-  const renderPhotos = source => {
-    return source.map(photo => {
-      return <Image src={photo} alt='' key={photo} />
-    })
   }
 
   const formik = useFormik({
@@ -130,17 +95,18 @@ const EditProductSceen = ({ history, match }) => {
         .required('Pole wymagane')
     }),
     onSubmit: values => {
-      console.log(values)
-      const product = {
-        name: values.productName,
-        category: values.productCategory,
-        image: '/srodek_do_mycia_zmywarek.png',
-        countInStock: values.productCountInStock,
-        price: values.productPrice,
-        descriptiom: values.productDescription,
-        brand: values.productBrand
+      if (uploadedImage) {
+        const product = {
+          name: values.productName,
+          category: values.productCategory,
+          image: uploadedImage && uploadedImage.url,
+          countInStock: values.productCountInStock,
+          price: values.productPrice,
+          descriptiom: values.productDescription,
+          brand: values.productBrand
+        }
+        dispatch(updateProduct(prodId, product))
       }
-      // dispatch(updateProduct(prodId, product))
     },
     enableReinitialize: true
   })
@@ -185,21 +151,37 @@ const EditProductSceen = ({ history, match }) => {
             </Form.Group>
             <Form.Group>
               <Form.Label>Edytuj zdjęcia</Form.Label>
-              <input type='file' id='file' multiple onChange={hadnleChange} />
+              <input type='file' id='file' onChange={hadnleChange} />
               <div className='label-holder'>
                 <label htmlFor='file' className='label'>
                   <Button as='div'>
                     <FontAwesomeIcon icon={faCameraRetro} />
                   </Button>
-                  <Button onClick={handleUpload}>Wyślij</Button>
+                  {/* <Button onClick={handleUpload}>Wyślij</Button> */}
                 </label>
               </div>
-              {imagesError && (
+              {uploadedImage && uploadedImage.error && (
                 <Form.Control.Feedback className='d-block' type='invalid'>
-                  {imagesError}
+                  {uploadedImage.error}
                 </Form.Control.Feedback>
               )}
-              {/* <div className='result'>{renderPhotos(selectedImages)}</div> */}
+              {uploadError && (
+                <Form.Control.Feedback className='d-block' type='invalid'>
+                  {uploadError}
+                </Form.Control.Feedback>
+              )}
+              {file && (
+                <ProgressBar
+                  file={file}
+                  setFile={setFile}
+                  setUploadedImage={setUploadedImage}
+                />
+              )}
+              {uploadedImage && uploadedImage.url ? (
+                <Image src={uploadedImage.url} fluid />
+              ) : (
+                <Image src={product.image} fluid />
+              )}
             </Form.Group>
 
             <Form.Group>

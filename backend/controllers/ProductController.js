@@ -10,7 +10,7 @@ import qs from 'qs'
 const getProducts = asyncHanlder(async (req, res) => {
   const query = qs.parse(req.query)
   const offset = Number(query.offset) || 0
-  const pageSize = 2
+  const pageSize = 5
 
   let searchFilter = query.keyword
     ? {

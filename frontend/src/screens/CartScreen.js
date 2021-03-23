@@ -75,7 +75,7 @@ const CartScreen = ({ match, location, history }) => {
                     <Col md='3'>
                       <Image
                         fluid
-                        src={`/images/${product.image}`}
+                        src={product.image}
                         className='cartscreen-image'
                       />
                     </Col>

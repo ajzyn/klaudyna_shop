@@ -86,7 +86,7 @@ const PlaceOrderScreen = ({ history }) => {
                             <Image
                               fluid
                               className='cartscreen-image'
-                              src={`/images${cartItem.image}`}
+                              src={cartItem.image}
                             />
                           </Col>
                           <Col style={ColStyle} md='5'>
