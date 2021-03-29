@@ -34,7 +34,8 @@ const ShippingScreen = ({ history }) => {
     onSubmit: values => {
       dispatch(SaveShippingAddress(values))
       history.push('/payment')
-    }
+    },
+    enableReinitialize: true
   })
   return (
     <>

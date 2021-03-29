@@ -30,7 +30,7 @@ const CartScreen = ({ match, location, history }) => {
     if (productId) {
       dispatch(AddToCart(productId, qty))
     }
-  }, [dispatch, location, history, productId, qty])
+  }, [dispatch, productId, qty])
 
   const handleRemoveProduct = id => {
     dispatch(RemoveFromCart(id))
