@@ -29,6 +29,10 @@ import Message from '../components/Message'
 import Paginate from '../components/Paginate'
 import resizeFile from '../utils/resizer'
 import ProgressBar from '../components/ProgressBar'
+import {
+  PRODUCT_DELETE_RESET,
+  PRODUCT_CREATE_RESET
+} from '../constants/ProductConstants'
 
 const trashStyle = {
   padding: '0 !important',
@@ -77,6 +81,11 @@ const ProductListScreen = ({ history, match }) => {
   } = productDelete
 
   useEffect(() => {
+    dispatch({ type: PRODUCT_DELETE_RESET })
+    dispatch({ type: PRODUCT_CREATE_RESET })
+  }, [])
+
+  useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
       dispatch(getProducts('', offset))
     } else {
@@ -118,7 +127,9 @@ const ProductListScreen = ({ history, match }) => {
         .min(3, 'Nazwa zbyt krótka')
         .max(50, 'Nazwa zbyt długa')
         .required('Pole wymagane'),
-      productPrice: Yup.string().required('Pole wymagane'),
+      productPrice: Yup.number()
+        .typeError('Nieprawidłowa cena')
+        .required('Pole wymagane'),
       productBrand: Yup.string()
         .min(3, 'Nazwa zbyt krótka')
         .max(50, 'Nazwa zbyt długa')
@@ -127,7 +138,9 @@ const ProductListScreen = ({ history, match }) => {
         .min(3, 'Nazwa zbyt krótka')
         .max(50, 'Nazwa zbyt długa')
         .required('Pole wymagane'),
-      productCountInStock: Yup.string().required('Pole wymagane'),
+      productCountInStock: Yup.number()
+        .typeError('Nieprawidłowa cena')
+        .required('Pole wymagane'),
       productDescription: Yup.string()
         .min(3, 'Nazwa zbyt krótka')
         .max(500, 'Nazwa zbyt długa')
@@ -159,6 +172,11 @@ const ProductListScreen = ({ history, match }) => {
     <Container>
       {error && <Message variant='danger'>{error}</Message>}
       {deleteError && <Message variant='danger'>{deleteError}</Message>}
+      {errorCreate && (
+        <Message variant='danger'>Nie udało się stworzyć produktu</Message>
+      )}
+      {deleteSuccess && <Message variant='success'>Produkt usunięty</Message>}
+      {successCreated && <Message variant='success'>Produkt stworzony</Message>}
       <Row className='mb-4'>
         <Col>
           <h1>Produkty</h1>
@@ -299,7 +317,7 @@ const ProductListScreen = ({ history, match }) => {
           </Modal>
         </Col>
       </Row>
-      {loading || deleteLoading ? (
+      {loading || deleteLoading || loadingCreate ? (
         <Loader />
       ) : (
         <Table striped bordered hover>

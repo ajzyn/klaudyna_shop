@@ -19,6 +19,14 @@ import Resizer from 'react-image-file-resizer'
 import ProgressBar from '../components/ProgressBar'
 import resizeFile from '../utils/resizer'
 
+// const schema = Yup.object().shape({
+//   name: Yup.string().required('name is required'),
+//   age: Yup.number()
+
+//     .positive('age must be greater than zero')
+//     .required('age is required')
+// })
+
 const EditProductSceen = ({ history, match }) => {
   const [isLoaded, setIsLoaded] = useState(false)
   //images
@@ -38,16 +46,18 @@ const EditProductSceen = ({ history, match }) => {
   const { loading: updateLoading, error: updateError, success } = productUpdate
 
   useEffect(() => {
+    dispatch({ type: PRODUCT_UPDATE_RESET })
+  }, [])
+
+  useEffect(() => {
     if (!userInfo || !userInfo.isAdmin) {
       history.push('/login')
     } else {
-      if (!isLoaded || !product.name || product._id !== prodId || success) {
+      if (!product.name || product._id !== prodId) {
         dispatch(getProductDetails(prodId))
-        setIsLoaded(true)
-        dispatch({ type: PRODUCT_UPDATE_RESET })
       }
     }
-  }, [history, dispatch, product, isLoaded, success])
+  }, [history, dispatch, product, success])
 
   const hadnleChange = async e => {
     const selected = e.target.files[0]
@@ -79,7 +89,9 @@ const EditProductSceen = ({ history, match }) => {
         .min(3, 'Nazwa zbyt krótka')
         .max(50, 'Nazwa zbyt długa')
         .required('Pole wymagane'),
-      productPrice: Yup.string().required('Pole wymagane'),
+      productPrice: Yup.number()
+        .typeError('Nieprawidłowa cena')
+        .required('Pole wymagane'),
       productBrand: Yup.string()
         .min(3, 'Nazwa zbyt krótka')
         .max(50, 'Nazwa zbyt długa')
@@ -88,25 +100,25 @@ const EditProductSceen = ({ history, match }) => {
         .min(3, 'Nazwa zbyt krótka')
         .max(50, 'Nazwa zbyt długa')
         .required('Pole wymagane'),
-      productCountInStock: Yup.string().required('Pole wymagane'),
+      productCountInStock: Yup.number()
+        .typeError('Nieprawidłowa cena')
+        .required('Pole wymagane'),
       productDescription: Yup.string()
         .min(3, 'Nazwa zbyt krótka')
         .max(500, 'Nazwa zbyt długa')
         .required('Pole wymagane')
     }),
     onSubmit: values => {
-      if (uploadedImage) {
-        const product = {
-          name: values.productName,
-          category: values.productCategory,
-          image: uploadedImage && uploadedImage.url,
-          countInStock: values.productCountInStock,
-          price: values.productPrice,
-          descriptiom: values.productDescription,
-          brand: values.productBrand
-        }
-        dispatch(updateProduct(prodId, product))
+      const product = {
+        name: values.productName,
+        category: values.productCategory,
+        image: uploadedImage && uploadedImage.url,
+        countInStock: values.productCountInStock,
+        price: values.productPrice,
+        description: values.productDescription,
+        brand: values.productBrand
       }
+      dispatch(updateProduct(prodId, product))
     },
     enableReinitialize: true
   })
@@ -117,7 +129,7 @@ const EditProductSceen = ({ history, match }) => {
     <Container>
       {updateError && <Message variant='danger'>{updateError}</Message>}
       {error && <Message variant='danger'>{error}</Message>}
-      {success && <Message variant='success'>Przedmiot zaedytowany</Message>}
+      {success && <Message variant='success'>Przedmiot zedytowany</Message>}
       <Button onClick={() => history.goBack()}>Powrót</Button>
       <Row className='justify-content-center align-items-center'>
         <Col md='6'>

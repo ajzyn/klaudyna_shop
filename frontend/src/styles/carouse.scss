@@ -9,3 +9,9 @@
     object-fit: contain;
   }
 }
+
+.carousel__caption {
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px 0 !important;
+  color: #ddd !important;
+}

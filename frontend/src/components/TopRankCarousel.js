@@ -24,7 +24,7 @@ const TopRankCarousel = () => {
               src={product.image}
               alt='product image'
             />
-            <Carousel.Caption>
+            <Carousel.Caption className='carousel__caption'>
               <h5>{product.name}</h5>
             </Carousel.Caption>
           </Carousel.Item>

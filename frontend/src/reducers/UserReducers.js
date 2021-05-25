@@ -26,7 +26,8 @@ import {
   USER_UPDATE_REQUEST,
   USER_UPDATE_FAIL,
   USER_UPDATE_SUCCESS,
-  USER_UPDATE_RESET
+  USER_UPDATE_RESET,
+  USER_DELETE_RESET
 } from '../constants/UserConstants'
 
 export const userLoginReducer = (
@@ -120,6 +121,8 @@ export const userDeleteReducer = (state = {}, { type, payload }) => {
       return { loading: false, success: true }
     case USER_DELETE_FAIL:
       return { error: payload, loading: false }
+    case USER_DELETE_RESET:
+      return {}
     default:
       return { ...state }
   }

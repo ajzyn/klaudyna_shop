@@ -53,7 +53,7 @@ const HomeScreen = ({ match }) => {
                     </Col>
                   ))
                 ) : (
-                  <Message variant='info'>Brak wyników wyszukiwanai</Message>
+                  <Message variant='info'>Brak wyników wyszukiwania</Message>
                 )}
               </Row>
               <Paginate

@@ -16,7 +16,6 @@ import {
 import useCheckAuthorization from '../hooks/useCheckAuthorization'
 
 const UserEditScreen = ({ history, match }) => {
-  const [isLoaded, setisLoaded] = useState(false)
   const userId = match.params.id
   const dispatch = useDispatch()
   const userProfile = useSelector(state => state.userProfile)
@@ -32,21 +31,22 @@ const UserEditScreen = ({ history, match }) => {
   const { userInfo } = useSelector(state => state.userLogin)
 
   useCheckAuthorization(history)
+
+  useEffect(() => {
+    dispatch({ type: USER_UPDATE_RESET })
+  }, [])
+
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
       if (successUpdate) {
-        dispatch({ type: USER_UPDATE_RESET })
         dispatch(getUserProfileById(userId))
-      } else if (!isLoaded) {
-        dispatch(getUserProfileById(userId))
-        setisLoaded(true)
       }
     }
 
     return () => {
       dispatch({ type: USER_PROFILE_DETAILS_RESET })
     }
-  }, [userInfo, dispatch, successUpdate, isLoaded, history])
+  }, [userInfo, dispatch, successUpdate, history])
 
   const formik = useFormik({
     initialValues: {
@@ -80,49 +80,53 @@ const UserEditScreen = ({ history, match }) => {
     <Loader />
   ) : error ? (
     <Message variant='danger'>{error}</Message>
-  ) : errorUpdate ? (
-    <Message variant='danger'>{errorUpdate}</Message>
   ) : (
-    <Container>
-      <Row>
-        <Col md={6}>
-          <Button as='a' onClick={() => history.goBack()}>
-            Powrót
-          </Button>
-          <h1>Edytuj dane użytkownika</h1>
-          <Form noValidate onSubmit={formik.handleSubmit}>
-            <Form.Group>
-              <Form.Label>Nazwa uzytkownika</Form.Label>
-              <Form.Control
-                id='editUserName'
-                type='text'
-                {...formik.getFieldProps('editUserName')}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Email uzytkownika</Form.Label>
-              <Form.Control
-                id='editUserEmail'
-                type='email'
-                {...formik.getFieldProps('editUserEmail')}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Uprawnienia administratora</Form.Label>
-              <Form.Check
-                id='editUserEmail'
-                type='checkbox'
-                checked={formik.values.editUserIsAdmin}
-                {...formik.getFieldProps('editUserIsAdmin')}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Button type='submit'>Zapisz</Button>
-            </Form.Group>
-          </Form>
-        </Col>
-      </Row>
-    </Container>
+    <>
+      {successUpdate && (
+        <Message variant='success'>Użytkownik zedytowany</Message>
+      )}
+      {errorUpdate && <Message variant='success'>{errorUpdate}</Message>}
+      <Container>
+        <Row>
+          <Col md={6}>
+            <Button as='a' onClick={() => history.goBack()}>
+              Powrót
+            </Button>
+            <h1>Edytuj dane użytkownika</h1>
+            <Form noValidate onSubmit={formik.handleSubmit}>
+              <Form.Group>
+                <Form.Label>Nazwa uzytkownika</Form.Label>
+                <Form.Control
+                  id='editUserName'
+                  type='text'
+                  {...formik.getFieldProps('editUserName')}
+                />
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Email uzytkownika</Form.Label>
+                <Form.Control
+                  id='editUserEmail'
+                  type='email'
+                  {...formik.getFieldProps('editUserEmail')}
+                />
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>Uprawnienia administratora</Form.Label>
+                <Form.Check
+                  id='editUserEmail'
+                  type='checkbox'
+                  checked={formik.values.editUserIsAdmin}
+                  {...formik.getFieldProps('editUserIsAdmin')}
+                />
+              </Form.Group>
+              <Form.Group>
+                <Button type='submit'>Zapisz</Button>
+              </Form.Group>
+            </Form>
+          </Col>
+        </Row>
+      </Container>
+    </>
   )
 }
 

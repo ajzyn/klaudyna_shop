@@ -13,6 +13,7 @@ import {
 import Loader from '../components/Loader'
 import { deleteUser } from '../actions/UserActions'
 import Message from '../components/Message'
+import { USER_DELETE_RESET } from '../constants/UserConstants'
 
 const trashStyle = {
   padding: '0 !important',
@@ -30,6 +31,10 @@ const UserListScreen = ({ history }) => {
   const { success, error } = userDelete
 
   useEffect(() => {
+    dispatch({ type: USER_DELETE_RESET })
+  }, [])
+
+  useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
       dispatch(getAllUsers())
     } else {
@@ -44,6 +49,7 @@ const UserListScreen = ({ history }) => {
   return (
     <Container>
       {error && <Message variant='danger'>{error}</Message>}
+      {success && <Message variant='success'>Użytkownik usunięty</Message>}
       <h1>Użytkownicy</h1>
       {loading ? (
         <Loader />

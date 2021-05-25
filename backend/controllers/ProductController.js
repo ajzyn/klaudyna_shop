@@ -10,7 +10,7 @@ import qs from 'qs'
 const getProducts = asyncHanlder(async (req, res) => {
   const query = qs.parse(req.query)
   const offset = Number(query.offset) || 0
-  const pageSize = 5
+  const pageSize = 4
 
   let searchFilter = query.keyword
     ? {
@@ -72,6 +72,7 @@ const updateProduct = asyncHanlder(async (req, res) => {
       (product.image = req.body.image || product.image)
 
     const updatedProduct = await product.save()
+
     res.json(updatedProduct)
   } else {
     res.status(404)
