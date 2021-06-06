@@ -43,7 +43,10 @@ const PlaceOrderScreen = ({ history }) => {
     cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
   )
 
-  cart.shippingPrice = addDecimals(cartItems.itemsPrice > 100 ? 0 : 100)
+  //kiedys w wolnym czasie wrzucic to do backendu
+  cart.shippingPrice = addDecimals(
+    shippingAddress.country.toLowerCase() === 'polska' ? 20 : 70
+  )
   cart.taxPrice = addDecimals(cart.itemsPrice * 0.23)
 
   cart.totalPrice = addDecimals(

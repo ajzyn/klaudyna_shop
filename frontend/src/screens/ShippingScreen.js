@@ -98,7 +98,7 @@ const ShippingScreen = ({ history }) => {
                 )}
               </FormGroup>
               <Button type='submit' style={btnStyle}>
-                Dalej
+                Przejdź dalej
               </Button>
             </Form>
           </Col>

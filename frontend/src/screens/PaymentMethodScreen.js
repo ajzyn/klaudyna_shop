@@ -20,6 +20,7 @@ const PaymentMethodScreen = ({ history }) => {
     dispatch(SavePaymentMethod(paymentMethod))
     history.push('/placeorder')
   }
+
   return (
     <Container>
       <Row className='justify-content-md-center'>
@@ -42,11 +43,10 @@ const PaymentMethodScreen = ({ history }) => {
               name='paymentMethod'
               id='FreePaymentMethod'
               label='Za darmo'
-              disabled
               onClick={e => setPaymentMethod(e.target.value)}
             />
             <Button type='submit' style={btnStyle}>
-              Złóż zamówienie
+              Przejdź dalej
             </Button>
           </Form>
         </Col>

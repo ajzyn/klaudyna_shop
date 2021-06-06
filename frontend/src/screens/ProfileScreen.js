@@ -63,6 +63,11 @@ const ProfileScreen = ({ history }) => {
   ) : (
     <Container className='profilescreen-container'>
       <Row>
+        <Col>
+          <Button onClick={() => history.goBack()}>Powrót</Button>
+        </Col>
+      </Row>
+      <Row>
         <Col md={3}>
           <h2>Profil użytkownika</h2>
           <Form noValidate onSubmit={formik.handleSubmit}>

@@ -23,6 +23,10 @@ const createOrder = asyncHandler(async (req, res) => {
       taxPrice,
       shippingPrice
     })
+    if (paymentMethod === 'free') {
+      order.isPaid = true
+      order.paidAt = Date.now()
+    }
     const createdOrder = await order.save()
     res.status(201).json({ id: createdOrder._id })
   } catch (error) {
