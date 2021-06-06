@@ -80,7 +80,9 @@ const CartScreen = ({ match, location, history }) => {
                       />
                     </Col>
                     <Col md='3'>
-                      <Link to={`/product/${product.id}`}>{product.name}</Link>
+                      <Link to={`/product/${product.product}`}>
+                        {product.name}
+                      </Link>
                     </Col>
                     <Col md='2'>{product.price} zł</Col>
                     <Col md='2'>
@@ -103,7 +105,7 @@ const CartScreen = ({ match, location, history }) => {
                     <Col md='1'>
                       <Button
                         type='button'
-                        onClick={() => handleRemoveProduct(product.id)}
+                        onClick={() => handleRemoveProduct(product.product)}
                       >
                         <FontAwesomeIcon icon={faTrash} />
                       </Button>
@@ -132,7 +134,7 @@ const CartScreen = ({ match, location, history }) => {
                   className='btn-block'
                   onClick={orderHanlder}
                 >
-                  Zamów
+                  Przejdź dalej
                 </Button>
               </ListGroup.Item>
             </ListGroup>
