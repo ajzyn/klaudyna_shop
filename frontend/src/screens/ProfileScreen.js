@@ -12,16 +12,22 @@ import useCheckAuthorization from '../hooks/useCheckAuthorization'
 import { getOrders } from '../actions/OrderActions'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimes, faCheck } from '@fortawesome/free-solid-svg-icons'
+import { USER_UPDATE_PROFILE_RESET } from '../constants/UserConstants'
 
 const ProfileScreen = ({ history }) => {
   const dispatch = useDispatch()
 
   const { userInfo, loading } = useSelector(state => state.userLogin)
+  const { success: successUpdateUserProfile, error } = useSelector(state => state.userUpdatedProfile)
 
   const orderListMy = useSelector(state => state.orderListMy)
   const { orders, loading: loadingOrders, success } = orderListMy
 
   useCheckAuthorization(history)
+
+  useEffect(() => {
+    dispatch({ type: USER_UPDATE_PROFILE_RESET })
+  }, [])
 
   useEffect(() => {
     if (userInfo && !success) {
@@ -45,7 +51,7 @@ const ProfileScreen = ({ history }) => {
         .min(8, 'Minimalna długość hasła to 8 znaków')
         .max(20, 'Maksymalna długość hasła to 20 znaków'),
       editConfirmPassword: Yup.string().oneOf(
-        [Yup.ref('registerPassword'), null],
+        [Yup.ref('editPassword'), null],
         'Hasła muszą być takie same!'
       )
     }),
@@ -58,10 +64,15 @@ const ProfileScreen = ({ history }) => {
       dispatch(updateUserProfile(data))
     }
   })
+
+
+
   return loading ? (
     <Loader />
   ) : (
     <Container className='profilescreen-container'>
+      {successUpdateUserProfile && <Message variant="success">Udało się zmienić dane</Message>}
+      {error && <Message variant="danger">Nie udał się zmienić danych</Message>}
       <Row>
         <Col>
           <Button onClick={() => history.goBack()}>Powrót</Button>
@@ -78,6 +89,11 @@ const ProfileScreen = ({ history }) => {
                 id='editName'
                 {...formik.getFieldProps('editName')}
               />
+              {formik.touched.editName && formik.errors.editName && (
+                <Form.Control.Feedback className='d-block' type='invalid'>
+                  {formik.errors.editName}
+                </Form.Control.Feedback>
+              )}
             </Form.Group>
 
             <Form.Group>
@@ -85,9 +101,13 @@ const ProfileScreen = ({ history }) => {
               <Form.Control
                 type='email'
                 id='editEmail'
-                autoComplete='username'
                 {...formik.getFieldProps('editEmail')}
               />
+              {formik.touched.editEmail && formik.errors.editEmail && (
+                <Form.Control.Feedback className='d-block' type='invalid'>
+                  {formik.errors.editEmail}
+                </Form.Control.Feedback>
+              )}
             </Form.Group>
 
             <Form.Group>
@@ -98,6 +118,11 @@ const ProfileScreen = ({ history }) => {
                 autoComplete='new-password'
                 {...formik.getFieldProps('editPassword')}
               />
+              {formik.touched.editPassword && formik.errors.editPassword && (
+                <Form.Control.Feedback className='d-block' type='invalid'>
+                  {formik.errors.editPassword}
+                </Form.Control.Feedback>
+              )}
             </Form.Group>
 
             <Form.Group>
@@ -108,6 +133,11 @@ const ProfileScreen = ({ history }) => {
                 autoComplete='new-password'
                 {...formik.getFieldProps('editConfirmPassword')}
               />
+              {formik.touched.editConfirmPassword && formik.errors.editConfirmPassword && (
+                <Form.Control.Feedback className='d-block' type='invalid'>
+                  {formik.errors.editConfirmPassword}
+                </Form.Control.Feedback>
+              )}
             </Form.Group>
             <Button type='submit'>Edytuj dane</Button>
           </Form>
