@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import useStorage from '../hooks/useStorage'
-import useResizeAndStorage from '../hooks/useResizeAndStorage'
 import { ProgressBar as Progress } from 'react-bootstrap'
 
 const ProgressBar = ({ file, setFile, setUploadedImage }) => {
@@ -10,7 +9,7 @@ const ProgressBar = ({ file, setFile, setUploadedImage }) => {
       setFile(null)
       setUploadedImage(res)
     }
-  }, [res.url, setFile, setUploadedImage])
+  }, [res, setFile, setUploadedImage])
 
   return <Progress now={res.progress} label={`${res.progress}%`} />
 }

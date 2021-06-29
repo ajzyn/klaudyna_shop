@@ -1,11 +1,9 @@
-import { Button, Container } from 'react-bootstrap'
 import {
   Switch,
   Route,
   BrowserRouter as Router,
   Redirect
 } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 //components
 import Header from './components/Header'
 import Footer from './components/Footer'
@@ -32,42 +30,41 @@ import OrderListScreen from './screens/OrderListScreen'
 import Galleryscreen from './screens/Galleryscreen'
 
 function App() {
-  const { userInfo } = useSelector(state => state.userLogin)
   return (
     <Router>
       <ScrollToTop />
       <Header />
       <main>
         <Switch>
-          <Route path='/product/:id' component={ProductDetailsScreen} />
-          <Route path='/cart/:id?' component={CartScreen} />
-          <Route path='/login' component={LoginScreen} />
-          <Route path='/register' component={RegisterScreen} />
-          <Route path='/login' component={LoginScreen} />
-          <Route path='/profile' component={ProfileScreen} />
-          <Route path='/shipping' component={ShippingScreen} />
-          <Route path='/payment' component={PaymentMethodScreen} />
-          <Route path='/placeorder' component={PlaceOrderScreen} />
-          <Route path='/order/:id' component={OrderScreen} />
-          <Route path='/admin/products' exact component={ProductListScreen} />
+          <Route path="/product/:id" component={ProductDetailsScreen} />
+          <Route path="/cart/:id?" component={CartScreen} />
+          <Route path="/login" component={LoginScreen} />
+          <Route path="/register" component={RegisterScreen} />
+          <Route path="/login" component={LoginScreen} />
+          <Route path="/profile" component={ProfileScreen} />
+          <Route path="/shipping" component={ShippingScreen} />
+          <Route path="/payment" component={PaymentMethodScreen} />
+          <Route path="/placeorder" component={PlaceOrderScreen} />
+          <Route path="/order/:id" component={OrderScreen} />
+          <Route path="/admin/products" exact component={ProductListScreen} />
           <Route
-            path='/admin/products/page/:offset'
+            path="/admin/products/page/:offset"
             component={ProductListScreen}
           />
-          <Route path='/admin/product/:id/edit' component={EditProductSceen} />
-          <Route path='/admin/users' component={UserListScreen} exact />
-          <Route path='/admin/users/:id/edit' component={UserEditScreen} />
-          <Route path='/admin/orders' component={OrderListScreen} />
-          <Route path='/search/:keyword' exact component={HomeScreen} />
-          <Route path='/page/:offset' exact component={HomeScreen} />
-          <Route path='/gallery' component={Galleryscreen} />
+          <Route path="/admin/product/:id/edit" component={EditProductSceen} />
+          <Route path="/admin/users" component={UserListScreen} exact />
+          <Route path="/admin/users/:id/edit" component={UserEditScreen} />
+          <Route path="/admin/orders" component={OrderListScreen} />
+          <Route path="/search/:keyword" exact component={HomeScreen} />
+          <Route path="/page/:offset" exact component={HomeScreen} />
+          <Route path="/gallery" component={Galleryscreen} />
           <Route
-            path='/search/:keyword/page/:offset'
+            path="/search/:keyword/page/:offset"
             exact
             component={HomeScreen}
           />
-          <Route path='/' exact component={HomeScreen} />
-          <Route render={() => <Redirect to='/' />}></Route>
+          <Route path="/" exact component={HomeScreen} />
+          <Route render={() => <Redirect to="/" />}></Route>
 
           {/* <Route
             {...rest}

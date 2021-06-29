@@ -1,21 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
 import { Container, Form, Button, Col, Row, Image } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import { getProductDetails, updateProduct } from '../actions/ProductActions'
-import {
-  PRODUCT_DETAILS_RESET,
-  PRODUCT_UPDATE_RESET
-} from '../constants/ProductConstants'
+import { PRODUCT_UPDATE_RESET } from '../constants/ProductConstants'
 import Loader from '../components/Loader'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCameraRetro } from '@fortawesome/free-solid-svg-icons'
 import '../styles/fileStyles.scss'
 import Message from '../components/Message'
-import Resizer from 'react-image-file-resizer'
 import ProgressBar from '../components/ProgressBar'
 import resizeFile from '../utils/resizer'
 
@@ -28,7 +22,6 @@ import resizeFile from '../utils/resizer'
 // })
 
 const EditProductSceen = ({ history, match }) => {
-  const [isLoaded, setIsLoaded] = useState(false)
   //images
   const [file, setFile] = useState(null)
   const [uploadError, setUploadError] = useState('')
@@ -37,17 +30,17 @@ const EditProductSceen = ({ history, match }) => {
   const prodId = match.params.id
   const dispatch = useDispatch()
 
-  const { userInfo } = useSelector(state => state.userLogin)
+  const { userInfo } = useSelector((state) => state.userLogin)
 
-  const productDetails = useSelector(state => state.productDetails)
+  const productDetails = useSelector((state) => state.productDetails)
   const { loading, error, product } = productDetails
 
-  const productUpdate = useSelector(state => state.productUpdate)
+  const productUpdate = useSelector((state) => state.productUpdate)
   const { loading: updateLoading, error: updateError, success } = productUpdate
 
   useEffect(() => {
     dispatch({ type: PRODUCT_UPDATE_RESET })
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
     if (!userInfo || !userInfo.isAdmin) {
@@ -57,9 +50,9 @@ const EditProductSceen = ({ history, match }) => {
         dispatch(getProductDetails(prodId))
       }
     }
-  }, [history, dispatch, product, success])
+  }, [history, dispatch, product, success, prodId, userInfo])
 
-  const hadnleChange = async e => {
+  const hadnleChange = async (e) => {
     const selected = e.target.files[0]
     const types = ['image/png', 'image/jpeg', 'image.jpg']
     if (selected && types.includes(selected.type)) {
@@ -108,7 +101,7 @@ const EditProductSceen = ({ history, match }) => {
         .max(500, 'Nazwa zbyt długa')
         .required('Pole wymagane')
     }),
-    onSubmit: values => {
+    onSubmit: (values) => {
       const product = {
         name: values.productName,
         category: values.productCategory,
@@ -127,23 +120,23 @@ const EditProductSceen = ({ history, match }) => {
     <Loader />
   ) : (
     <Container>
-      {updateError && <Message variant='danger'>{updateError}</Message>}
-      {error && <Message variant='danger'>{error}</Message>}
-      {success && <Message variant='success'>Przedmiot zedytowany</Message>}
+      {updateError && <Message variant="danger">{updateError}</Message>}
+      {error && <Message variant="danger">{error}</Message>}
+      {success && <Message variant="success">Przedmiot zedytowany</Message>}
       <Button onClick={() => history.goBack()}>Powrót</Button>
-      <Row className='justify-content-center align-items-center'>
-        <Col md='6'>
+      <Row className="justify-content-center align-items-center">
+        <Col md="6">
           <h1>Edytuj Produkt</h1>
           <Form noValidate onSubmit={formik.handleSubmit}>
             <Form.Group>
               <Form.Label>Nazwa produktu</Form.Label>
               <Form.Control
-                type='text'
-                id='productName'
+                type="text"
+                id="productName"
                 {...formik.getFieldProps('productName')}
               />
               {formik.touched.productName && formik.errors.productName && (
-                <Form.Control.Feedback className='d-block' type='invalid'>
+                <Form.Control.Feedback className="d-block" type="invalid">
                   {formik.errors.productName}
                 </Form.Control.Feedback>
               )}
@@ -151,34 +144,34 @@ const EditProductSceen = ({ history, match }) => {
             <Form.Group>
               <Form.Label>Cena</Form.Label>
               <Form.Control
-                type='text'
-                id='productPrice'
+                type="text"
+                id="productPrice"
                 {...formik.getFieldProps('productPrice')}
               />
               {formik.touched.productPrice && formik.errors.productPrice && (
-                <Form.Control.Feedback className='d-block' type='invalid'>
+                <Form.Control.Feedback className="d-block" type="invalid">
                   {formik.errors.productPrice}
                 </Form.Control.Feedback>
               )}
             </Form.Group>
             <Form.Group>
               <Form.Label>Edytuj zdjęcia</Form.Label>
-              <input type='file' id='file' onChange={hadnleChange} />
-              <div className='label-holder'>
-                <label htmlFor='file' className='label'>
-                  <Button as='div'>
+              <input type="file" id="file" onChange={hadnleChange} />
+              <div className="label-holder">
+                <label htmlFor="file" className="label">
+                  <Button as="div">
                     <FontAwesomeIcon icon={faCameraRetro} />
                   </Button>
                   {/* <Button onClick={handleUpload}>Wyślij</Button> */}
                 </label>
               </div>
               {uploadedImage && uploadedImage.error && (
-                <Form.Control.Feedback className='d-block' type='invalid'>
+                <Form.Control.Feedback className="d-block" type="invalid">
                   {uploadedImage.error}
                 </Form.Control.Feedback>
               )}
               {uploadError && (
-                <Form.Control.Feedback className='d-block' type='invalid'>
+                <Form.Control.Feedback className="d-block" type="invalid">
                   {uploadError}
                 </Form.Control.Feedback>
               )}
@@ -199,12 +192,12 @@ const EditProductSceen = ({ history, match }) => {
             <Form.Group>
               <Form.Label>Marka</Form.Label>
               <Form.Control
-                type='text'
-                id='productBrand'
+                type="text"
+                id="productBrand"
                 {...formik.getFieldProps('productBrand')}
               />
               {formik.touched.productBrand && formik.errors.productBrand && (
-                <Form.Control.Feedback className='d-block' type='invalid'>
+                <Form.Control.Feedback className="d-block" type="invalid">
                   {formik.errors.productBrand}
                 </Form.Control.Feedback>
               )}
@@ -213,12 +206,12 @@ const EditProductSceen = ({ history, match }) => {
             <Form.Group>
               <Form.Label>Kategoria</Form.Label>
               <Form.Control
-                type='text'
-                id='productCategory'
+                type="text"
+                id="productCategory"
                 {...formik.getFieldProps('productCategory')}
               />
               {formik.touched.productCategory && formik.errors.productCategory && (
-                <Form.Control.Feedback className='d-block' type='invalid'>
+                <Form.Control.Feedback className="d-block" type="invalid">
                   {formik.errors.productCategory}
                 </Form.Control.Feedback>
               )}
@@ -227,13 +220,13 @@ const EditProductSceen = ({ history, match }) => {
             <Form.Group>
               <Form.Label>Ilość sztuk</Form.Label>
               <Form.Control
-                type='text'
-                id='productCountInStock'
+                type="text"
+                id="productCountInStock"
                 {...formik.getFieldProps('productCountInStock')}
               />
               {formik.touched.productCountInStock &&
                 formik.errors.productCountInStock && (
-                  <Form.Control.Feedback className='d-block' type='invalid'>
+                  <Form.Control.Feedback className="d-block" type="invalid">
                     {formik.errors.productCountInStock}
                   </Form.Control.Feedback>
                 )}
@@ -242,22 +235,22 @@ const EditProductSceen = ({ history, match }) => {
             <Form.Group>
               <Form.Label>Opis</Form.Label>
               <Form.Control
-                type='text'
-                as='textarea'
-                className='textarea'
-                id='productDescription'
+                type="text"
+                as="textarea"
+                className="textarea"
+                id="productDescription"
                 {...formik.getFieldProps('productDescription')}
               />
               {formik.touched.productDescription &&
                 formik.errors.productDescription && (
-                  <Form.Control.Feedback className='d-block' type='invalid'>
+                  <Form.Control.Feedback className="d-block" type="invalid">
                     {formik.errors.productDescription}
                   </Form.Control.Feedback>
                 )}
             </Form.Group>
 
             <Form.Group>
-              <Button type='submit'>Edytuj</Button>
+              <Button type="submit">Edytuj</Button>
             </Form.Group>
           </Form>
         </Col>

@@ -59,16 +59,3 @@ export const cartReducer = (
   }
 }
 
-// paypal czasami nie dzialczy
-//dodac na kazdej podstronie lokalizzaotry lepsze ( np. do numeru total prac spana w ktorym jest kwota ) albo na placeorder adres wysylki w osobnych spanach
-//zmienic w components checkoutproccess bylo podswietlone na jakim etapie jestesmy
-//nie dziala edycja hasla
-//zmienic font - błąd w consoli
-//tego sassa ogarnac w koncu!!!
-
-//odkryj opcje "za darmo" ( /paymentscreen) przy której zamówienie będize z góry opłacone
-//na stronie /cart zmienić "zamów" na "przejdz do nastepnego kroku np."
-//zrobić inną kwotę zamówienia dla adresu wysyłki poza polską
-//usuwaja sie wszystkie egzempalrze gdy usuwam jeden z nich - w koszyku
-//sprawdzic dlaczego nie moge 2 razy zrobic zamowienia
-//na order imie zmienic na nazwa usera

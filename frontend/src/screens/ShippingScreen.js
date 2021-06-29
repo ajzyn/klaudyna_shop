@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Container, Form, FormGroup, Row, Col, Button } from 'react-bootstrap'
 import { useFormik } from 'formik'
@@ -16,7 +16,7 @@ const btnStyle = {
 const ShippingScreen = ({ history }) => {
   useCheckAuthorization(history)
   const dispatch = useDispatch()
-  const { shippingAddress } = useSelector(state => state.cart)
+  const { shippingAddress } = useSelector((state) => state.cart)
 
   const formik = useFormik({
     initialValues: {
@@ -31,7 +31,7 @@ const ShippingScreen = ({ history }) => {
       postalCode: Yup.string().required('Wypełnij pole'),
       country: Yup.string().required('Wypełnij pole')
     }),
-    onSubmit: values => {
+    onSubmit: (values) => {
       dispatch(SaveShippingAddress(values))
       history.push('/payment')
     },
@@ -41,19 +41,19 @@ const ShippingScreen = ({ history }) => {
     <>
       <Container>
         <CheckoutProcess step1 step2 />
-        <Row className='justify-content-md-center'>
-          <Col md='6'>
-            <h1 className='mb-5'>Wysyłka</h1>
+        <Row className="justify-content-md-center">
+          <Col md="6">
+            <h1 className="mb-5">Wysyłka</h1>
             <Form noValidate onSubmit={formik.handleSubmit}>
               <FormGroup>
                 <Form.Label>Adres</Form.Label>
                 <Form.Control
-                  type='text'
-                  id='address'
+                  type="text"
+                  id="address"
                   {...formik.getFieldProps('address')}
                 />
                 {formik.touched.address && formik.errors.address && (
-                  <Form.Control.Feedback className='d-block' type='invalid'>
+                  <Form.Control.Feedback className="d-block" type="invalid">
                     {formik.errors.address}
                   </Form.Control.Feedback>
                 )}
@@ -61,12 +61,12 @@ const ShippingScreen = ({ history }) => {
               <FormGroup>
                 <Form.Label>Miasto</Form.Label>
                 <Form.Control
-                  type='text'
-                  id='city'
+                  type="text"
+                  id="city"
                   {...formik.getFieldProps('city')}
                 />
                 {formik.touched.city && formik.errors.city && (
-                  <Form.Control.Feedback className='d-block' type='invalid'>
+                  <Form.Control.Feedback className="d-block" type="invalid">
                     {formik.errors.city}
                   </Form.Control.Feedback>
                 )}
@@ -74,12 +74,12 @@ const ShippingScreen = ({ history }) => {
               <FormGroup>
                 <Form.Label>Kod pocztowy</Form.Label>
                 <Form.Control
-                  type='text'
-                  id='postalCode'
+                  type="text"
+                  id="postalCode"
                   {...formik.getFieldProps('postalCode')}
                 />
                 {formik.touched.postalCode && formik.errors.postalCode && (
-                  <Form.Control.Feedback className='d-block' type='invalid'>
+                  <Form.Control.Feedback className="d-block" type="invalid">
                     {formik.errors.postalCode}
                   </Form.Control.Feedback>
                 )}
@@ -87,17 +87,17 @@ const ShippingScreen = ({ history }) => {
               <FormGroup>
                 <Form.Label>Kraj</Form.Label>
                 <Form.Control
-                  type='text'
-                  id='country'
+                  type="text"
+                  id="country"
                   {...formik.getFieldProps('country')}
                 />
                 {formik.touched.country && formik.errors.country && (
-                  <Form.Control.Feedback className='d-block' type='invalid'>
+                  <Form.Control.Feedback className="d-block" type="invalid">
                     {formik.errors.country}
                   </Form.Control.Feedback>
                 )}
               </FormGroup>
-              <Button type='submit' style={btnStyle}>
+              <Button type="submit" style={btnStyle}>
                 Przejdź dalej
               </Button>
             </Form>

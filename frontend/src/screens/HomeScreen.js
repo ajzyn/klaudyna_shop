@@ -12,7 +12,7 @@ import TopRankCarousel from '../components/TopRankCarousel'
 
 const HomeScreen = ({ match }) => {
   const { keyword } = match.params
-  const productList = useSelector(state => state.productList)
+  const productList = useSelector((state) => state.productList)
   const {
     error,
     loading,
@@ -20,9 +20,7 @@ const HomeScreen = ({ match }) => {
     offset: offsetProductList,
     pages
   } = productList
-  const { loading: loadingCarousel } = useSelector(
-    state => state.productTopRank
-  )
+
   const dispatch = useDispatch()
   const offset = match.params.offset - 1 || 0
 
@@ -35,9 +33,9 @@ const HomeScreen = ({ match }) => {
       {loading ? (
         <Loader />
       ) : error ? (
-        <Message variant='danger'>{error}</Message>
+        <Message variant="danger">{error}</Message>
       ) : (
-        <div className='homescreen-best-products'>
+        <div className="homescreen-best-products">
           <h3>Najciekawsze produkty</h3>
           <hr />
           <Container>
@@ -45,15 +43,15 @@ const HomeScreen = ({ match }) => {
               <Row>
                 <TopRankCarousel />
               </Row>
-              <Row xs='2' md='4'>
+              <Row xs="2" md="4">
                 {products.length > 0 ? (
-                  products.map(product => (
+                  products.map((product) => (
                     <Col key={product._id} style={{ marginBottom: '35px' }}>
                       <Product product={product} />
                     </Col>
                   ))
                 ) : (
-                  <Message variant='info'>Brak wyników wyszukiwania</Message>
+                  <Message variant="info">Brak wyników wyszukiwania</Message>
                 )}
               </Row>
               <Paginate

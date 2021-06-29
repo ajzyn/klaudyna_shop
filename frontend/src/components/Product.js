@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, CardDeck } from 'react-bootstrap'
+import { Card } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import Rating from './Rating'
 import '../styles/homescreen.scss'
@@ -9,18 +9,18 @@ const Product = ({ product }) => {
 
   return (
     <LinkContainer to={`/product/${_id}`}>
-      <Card className='card-container'>
+      <Card className="card-container">
         <Card.Img
-          variant='bottom'
+          variant="bottom"
           src={image}
-          className='homescreen-card-image'
+          className="homescreen-card-image"
         />
         <Card.Body>
-          <Card.Title as='h4'>{name}</Card.Title>
-          <div className='card-content-separator'>
+          <Card.Title as="h4">{name}</Card.Title>
+          <div className="card-content-separator">
             <Card.Text>
               {' '}
-              <small className='text-muted'>{brand} </small>{' '}
+              <small className="text-muted">{brand} </small>{' '}
             </Card.Text>
             <Rating value={rating} />
             <Card.Text>Cena: {price} zł</Card.Text>

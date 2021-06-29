@@ -1,5 +1,9 @@
 @import './custom.scss';
 
+body {
+  overflow-x: hidden;
+}
+
 main {
   margin: 40px 0;
   min-height: 100vh;

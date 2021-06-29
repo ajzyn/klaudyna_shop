@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Container, Form, Button, Col, Row } from 'react-bootstrap'
 import { useFormik } from 'formik'
@@ -18,35 +18,33 @@ import useCheckAuthorization from '../hooks/useCheckAuthorization'
 const UserEditScreen = ({ history, match }) => {
   const userId = match.params.id
   const dispatch = useDispatch()
-  const userProfile = useSelector(state => state.userProfile)
-  const { error, loading, success, userInfo: user } = userProfile
+  const userProfile = useSelector((state) => state.userProfile)
+  const { error, loading, userInfo: user } = userProfile
 
-  const userUpdate = useSelector(state => state.userUpdate)
+  const userUpdate = useSelector((state) => state.userUpdate)
   const {
     error: errorUpdate,
     loading: loadingUpdate,
     success: successUpdate
   } = userUpdate
 
-  const { userInfo } = useSelector(state => state.userLogin)
+  const { userInfo } = useSelector((state) => state.userLogin)
 
   useCheckAuthorization(history)
 
   useEffect(() => {
     dispatch({ type: USER_UPDATE_RESET })
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
-      if (successUpdate) {
-        dispatch(getUserProfileById(userId))
-      }
+      dispatch(getUserProfileById(userId))
     }
 
     return () => {
       dispatch({ type: USER_PROFILE_DETAILS_RESET })
     }
-  }, [userInfo, dispatch, successUpdate, history])
+  }, [userInfo, dispatch, history, userId])
 
   const formik = useFormik({
     initialValues: {
@@ -64,7 +62,7 @@ const UserEditScreen = ({ history, match }) => {
         .required('Wymagane pole'),
       editUserIsAdmin: Yup.boolean()
     }),
-    onSubmit: values => {
+    onSubmit: (values) => {
       dispatch(
         updateUserProfileById(userId, {
           name: values.editUserName,
@@ -79,17 +77,17 @@ const UserEditScreen = ({ history, match }) => {
   return loading || loadingUpdate || !user ? (
     <Loader />
   ) : error ? (
-    <Message variant='danger'>{error}</Message>
+    <Message variant="danger">{error}</Message>
   ) : (
     <>
       {successUpdate && (
-        <Message variant='success'>Użytkownik zedytowany</Message>
+        <Message variant="success">Użytkownik zedytowany</Message>
       )}
-      {errorUpdate && <Message variant='success'>{errorUpdate}</Message>}
+      {errorUpdate && <Message variant="success">{errorUpdate}</Message>}
       <Container>
         <Row>
           <Col md={6}>
-            <Button as='a' onClick={() => history.goBack()}>
+            <Button as="a" onClick={() => history.goBack()}>
               Powrót
             </Button>
             <h1>Edytuj dane użytkownika</h1>
@@ -97,30 +95,30 @@ const UserEditScreen = ({ history, match }) => {
               <Form.Group>
                 <Form.Label>Nazwa uzytkownika</Form.Label>
                 <Form.Control
-                  id='editUserName'
-                  type='text'
+                  id="editUserName"
+                  type="text"
                   {...formik.getFieldProps('editUserName')}
                 />
               </Form.Group>
               <Form.Group>
                 <Form.Label>Email uzytkownika</Form.Label>
                 <Form.Control
-                  id='editUserEmail'
-                  type='email'
+                  id="editUserEmail"
+                  type="email"
                   {...formik.getFieldProps('editUserEmail')}
                 />
               </Form.Group>
               <Form.Group>
                 <Form.Label>Uprawnienia administratora</Form.Label>
                 <Form.Check
-                  id='editUserEmail'
-                  type='checkbox'
+                  id="editUserEmail"
+                  type="checkbox"
                   checked={formik.values.editUserIsAdmin}
                   {...formik.getFieldProps('editUserIsAdmin')}
                 />
               </Form.Group>
               <Form.Group>
-                <Button type='submit'>Zapisz</Button>
+                <Button type="submit">Zapisz</Button>
               </Form.Group>
             </Form>
           </Col>

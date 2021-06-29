@@ -55,9 +55,9 @@ const ProductListScreen = ({ history, match }) => {
   const handleShow = () => setShow(true)
 
   const dispatch = useDispatch()
-  const { userInfo } = useSelector(state => state.userLogin)
+  const { userInfo } = useSelector((state) => state.userLogin)
 
-  const productList = useSelector(state => state.productList)
+  const productList = useSelector((state) => state.productList)
   const {
     products,
     loading,
@@ -66,14 +66,14 @@ const ProductListScreen = ({ history, match }) => {
     offset: productListOffset
   } = productList
 
-  const productCreate = useSelector(state => state.productCreate)
+  const productCreate = useSelector((state) => state.productCreate)
   const {
     success: successCreated,
     loading: loadingCreate,
     error: errorCreate
   } = productCreate
 
-  const productDelete = useSelector(state => state.productDelete)
+  const productDelete = useSelector((state) => state.productDelete)
   const {
     success: deleteSuccess,
     loading: deleteLoading,
@@ -83,7 +83,7 @@ const ProductListScreen = ({ history, match }) => {
   useEffect(() => {
     dispatch({ type: PRODUCT_DELETE_RESET })
     dispatch({ type: PRODUCT_CREATE_RESET })
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
@@ -93,11 +93,11 @@ const ProductListScreen = ({ history, match }) => {
     }
   }, [userInfo, history, dispatch, deleteSuccess, successCreated, offset])
 
-  const handleDeleteProduct = id => {
+  const handleDeleteProduct = (id) => {
     dispatch(deleteProduct(id))
   }
 
-  const hadnleChange = async e => {
+  const hadnleChange = async (e) => {
     const selected = e.target.files[0]
     const types = ['image/png', 'image/jpeg', 'image.jpg']
     if (selected && types.includes(selected.type)) {
@@ -146,7 +146,7 @@ const ProductListScreen = ({ history, match }) => {
         .max(500, 'Nazwa zbyt długa')
         .required('Pole wymagane')
     }),
-    onSubmit: values => {
+    onSubmit: (values) => {
       if (!uploadedImage || uploadError) {
         setUploadError('Proszę wybrać zdjęcie')
       } else {
@@ -170,18 +170,18 @@ const ProductListScreen = ({ history, match }) => {
 
   return (
     <Container>
-      {error && <Message variant='danger'>{error}</Message>}
-      {deleteError && <Message variant='danger'>{deleteError}</Message>}
+      {error && <Message variant="danger">{error}</Message>}
+      {deleteError && <Message variant="danger">{deleteError}</Message>}
       {errorCreate && (
-        <Message variant='danger'>Nie udało się stworzyć produktu</Message>
+        <Message variant="danger">Nie udało się stworzyć produktu</Message>
       )}
-      {deleteSuccess && <Message variant='success'>Produkt usunięty</Message>}
-      {successCreated && <Message variant='success'>Produkt stworzony</Message>}
-      <Row className='mb-4'>
+      {deleteSuccess && <Message variant="success">Produkt usunięty</Message>}
+      {successCreated && <Message variant="success">Produkt stworzony</Message>}
+      <Row className="mb-4">
         <Col>
           <h1>Produkty</h1>
         </Col>
-        <Col className='d-flex justify-content-end'>
+        <Col className="d-flex justify-content-end">
           <Button onClick={handleShow}>Dodaj przedmiot</Button>
           <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
@@ -192,12 +192,12 @@ const ProductListScreen = ({ history, match }) => {
                 <Form.Group>
                   <Form.Label>Nazwa produktu</Form.Label>
                   <Form.Control
-                    type='text'
-                    id='productName'
+                    type="text"
+                    id="productName"
                     {...formik.getFieldProps('productName')}
                   />
                   {formik.touched.productName && formik.errors.productName && (
-                    <Form.Control.Feedback className='d-block' type='invalid'>
+                    <Form.Control.Feedback className="d-block" type="invalid">
                       {formik.errors.productName}
                     </Form.Control.Feedback>
                   )}
@@ -205,34 +205,34 @@ const ProductListScreen = ({ history, match }) => {
                 <Form.Group>
                   <Form.Label>Cena</Form.Label>
                   <Form.Control
-                    type='text'
-                    id='productPrice'
+                    type="text"
+                    id="productPrice"
                     {...formik.getFieldProps('productPrice')}
                   />
                   {formik.touched.productPrice && formik.errors.productPrice && (
-                    <Form.Control.Feedback className='d-block' type='invalid'>
+                    <Form.Control.Feedback className="d-block" type="invalid">
                       {formik.errors.productPrice}
                     </Form.Control.Feedback>
                   )}
                 </Form.Group>
                 <Form.Group>
                   <Form.Label>Edytuj zdjęcia</Form.Label>
-                  <input type='file' id='file' onChange={hadnleChange} />
-                  <div className='label-holder'>
-                    <label htmlFor='file' className='label'>
-                      <Button as='div'>
+                  <input type="file" id="file" onChange={hadnleChange} />
+                  <div className="label-holder">
+                    <label htmlFor="file" className="label">
+                      <Button as="div">
                         <FontAwesomeIcon icon={faCameraRetro} />
                       </Button>
                       {/* <Button onClick={handleUpload}>Wyślij</Button> */}
                     </label>
                   </div>
                   {uploadedImage && uploadedImage.error && (
-                    <Form.Control.Feedback className='d-block' type='invalid'>
+                    <Form.Control.Feedback className="d-block" type="invalid">
                       {uploadedImage.error}
                     </Form.Control.Feedback>
                   )}
                   {uploadError && (
-                    <Form.Control.Feedback className='d-block' type='invalid'>
+                    <Form.Control.Feedback className="d-block" type="invalid">
                       {uploadError}
                     </Form.Control.Feedback>
                   )}
@@ -251,12 +251,12 @@ const ProductListScreen = ({ history, match }) => {
                 <Form.Group>
                   <Form.Label>Marka</Form.Label>
                   <Form.Control
-                    type='text'
-                    id='productBrand'
+                    type="text"
+                    id="productBrand"
                     {...formik.getFieldProps('productBrand')}
                   />
                   {formik.touched.productBrand && formik.errors.productBrand && (
-                    <Form.Control.Feedback className='d-block' type='invalid'>
+                    <Form.Control.Feedback className="d-block" type="invalid">
                       {formik.errors.productBrand}
                     </Form.Control.Feedback>
                   )}
@@ -265,13 +265,13 @@ const ProductListScreen = ({ history, match }) => {
                 <Form.Group>
                   <Form.Label>Kategoria</Form.Label>
                   <Form.Control
-                    type='text'
-                    id='productCategory'
+                    type="text"
+                    id="productCategory"
                     {...formik.getFieldProps('productCategory')}
                   />
                   {formik.touched.productCategory &&
                     formik.errors.productCategory && (
-                      <Form.Control.Feedback className='d-block' type='invalid'>
+                      <Form.Control.Feedback className="d-block" type="invalid">
                         {formik.errors.productCategory}
                       </Form.Control.Feedback>
                     )}
@@ -280,13 +280,13 @@ const ProductListScreen = ({ history, match }) => {
                 <Form.Group>
                   <Form.Label>Ilość sztuk</Form.Label>
                   <Form.Control
-                    type='text'
-                    id='productCountInStock'
+                    type="text"
+                    id="productCountInStock"
                     {...formik.getFieldProps('productCountInStock')}
                   />
                   {formik.touched.productCountInStock &&
                     formik.errors.productCountInStock && (
-                      <Form.Control.Feedback className='d-block' type='invalid'>
+                      <Form.Control.Feedback className="d-block" type="invalid">
                         {formik.errors.productCountInStock}
                       </Form.Control.Feedback>
                     )}
@@ -295,22 +295,22 @@ const ProductListScreen = ({ history, match }) => {
                 <Form.Group>
                   <Form.Label>Opis</Form.Label>
                   <Form.Control
-                    type='text'
-                    as='textarea'
-                    className='textarea'
-                    id='productDescription'
+                    type="text"
+                    as="textarea"
+                    className="textarea"
+                    id="productDescription"
                     {...formik.getFieldProps('productDescription')}
                   />
                   {formik.touched.productDescription &&
                     formik.errors.productDescription && (
-                      <Form.Control.Feedback className='d-block' type='invalid'>
+                      <Form.Control.Feedback className="d-block" type="invalid">
                         {formik.errors.productDescription}
                       </Form.Control.Feedback>
                     )}
                 </Form.Group>
 
                 <Form.Group>
-                  <Button type='submit'>Dodaj produkt</Button>
+                  <Button type="submit">Dodaj produkt</Button>
                 </Form.Group>
               </Form>
             </Modal.Body>
@@ -332,25 +332,25 @@ const ProductListScreen = ({ history, match }) => {
             </tr>
           </thead>
           <tbody>
-            {products.map(product => (
+            {products.map((product) => (
               <tr key={product._id}>
                 <td>{product._id}</td>
                 <td>{product.name}</td>
                 <td>{product.price}</td>
                 <td>{product.category}</td>
                 <td>{product.brand}</td>
-                <td className='d-flex justify-content-center align-items-center'>
+                <td className="d-flex justify-content-center align-items-center">
                   <LinkContainer to={`/admin/product/${product._id}/edit`}>
-                    <Button variant='alert'>
-                      <FontAwesomeIcon size='xs' icon={faEdit} />
+                    <Button variant="alert">
+                      <FontAwesomeIcon size="xs" icon={faEdit} />
                     </Button>
                   </LinkContainer>
                   <Button
                     onClick={() => handleDeleteProduct(product._id)}
-                    variant='danger'
+                    variant="danger"
                     style={trashStyle}
                   >
-                    <FontAwesomeIcon size='xs' icon={faTrash} />
+                    <FontAwesomeIcon size="xs" icon={faTrash} />
                   </Button>
                 </td>
               </tr>

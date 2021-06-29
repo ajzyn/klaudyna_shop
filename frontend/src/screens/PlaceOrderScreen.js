@@ -24,9 +24,9 @@ const ColStyle = {
 
 const PlaceOrderScreen = ({ history }) => {
   const dispatch = useDispatch()
-  const cart = useSelector(state => state.cart)
+  const cart = useSelector((state) => state.cart)
   const { cartItems, shippingAddress, paymentMethod, error: cartError } = cart
-  const orderCreate = useSelector(state => state.orderCreate)
+  const orderCreate = useSelector((state) => state.orderCreate)
   const { loading, error: orderError, success, orderId } = orderCreate
 
   useEffect(() => {
@@ -34,11 +34,11 @@ const PlaceOrderScreen = ({ history }) => {
       history.push(`/order/${orderId}`)
       dispatch({ type: ORDER_CREATE_RESET })
     }
-  }, [success, history, orderId])
+  }, [success, history, orderId, dispatch])
 
   useCheckAuthorization(history)
 
-  const addDecimals = num => (Math.round(num * 100) / 100).toFixed(2)
+  const addDecimals = (num) => (Math.round(num * 100) / 100).toFixed(2)
   cart.itemsPrice = addDecimals(
     cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
   )
@@ -59,18 +59,18 @@ const PlaceOrderScreen = ({ history }) => {
 
   return (
     <>
-      {cartError && <Message variant='danger'>{cartError}</Message>}
-      {orderError && <Message variant='danger'>{orderError}</Message>}
+      {cartError && <Message variant="danger">{cartError}</Message>}
+      {orderError && <Message variant="danger">{orderError}</Message>}
       {cartItems.length === 0 ||
       !paymentMethod ||
       Object.keys(shippingAddress).length === 0 ? (
-        <Redirect to='/' />
+        <Redirect to="/" />
       ) : (
         <Container>
           <CheckoutProccess step1 step2 step3 step4 />
           <Row>
-            <Col md='8'>
-              <ListGroup variant='flush'>
+            <Col md="8">
+              <ListGroup variant="flush">
                 <ListGroup.Item>
                   <h4>Wysyłka</h4>
                   <p>{`${shippingAddress.address}, ${shippingAddress.postalCode}, ${shippingAddress.city}, ${shippingAddress.country}`}</p>
@@ -81,21 +81,21 @@ const PlaceOrderScreen = ({ history }) => {
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <h4>Przedmioty zamówienia</h4>
-                  <ListGroup variant='flush'>
-                    {cartItems.map(cartItem => (
+                  <ListGroup variant="flush">
+                    {cartItems.map((cartItem) => (
                       <ListGroup.Item key={cartItem.product}>
                         <Row>
-                          <Col md='4' style={ColStyle}>
+                          <Col md="4" style={ColStyle}>
                             <Image
                               fluid
-                              className='cartscreen-image'
+                              className="cartscreen-image"
                               src={cartItem.image}
                             />
                           </Col>
-                          <Col style={ColStyle} md='5'>
+                          <Col style={ColStyle} md="5">
                             {cartItem.name}
                           </Col>
-                          <Col style={ColStyle} md='3'>
+                          <Col style={ColStyle} md="3">
                             {`${cartItem.qty} x ${cartItem.price}zł = ${(
                               cartItem.qty * cartItem.price
                             ).toFixed(2)}`}
@@ -107,7 +107,7 @@ const PlaceOrderScreen = ({ history }) => {
                 </ListGroup.Item>
               </ListGroup>
             </Col>
-            <Col md='4'>
+            <Col md="4">
               <ListGroup>
                 <Card>
                   <ListGroup.Item>
@@ -137,11 +137,11 @@ const PlaceOrderScreen = ({ history }) => {
                       <Col>{cart.totalPrice} zł</Col>
                     </Row>
                   </ListGroup.Item>
-                  <ListGroup.Item className='d-flex justify-content-center'>
+                  <ListGroup.Item className="d-flex justify-content-center">
                     {loading ? (
                       <Loader />
                     ) : (
-                      <Button type='button' onClick={handleSubmit}>
+                      <Button type="button" onClick={handleSubmit}>
                         Załóż zamówienie
                       </Button>
                     )}

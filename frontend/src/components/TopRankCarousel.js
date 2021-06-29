@@ -7,7 +7,7 @@ import '../styles/carouse.scss'
 
 const TopRankCarousel = () => {
   const dispatch = useDispatch()
-  const productTopRank = useSelector(state => state.productTopRank)
+  const productTopRank = useSelector((state) => state.productTopRank)
   const { loading, products } = productTopRank
   useEffect(() => {
     dispatch(getTopRanked())
@@ -15,16 +15,12 @@ const TopRankCarousel = () => {
   return loading ? (
     <Loader />
   ) : (
-    <Carousel className='w-100 carousel-custom'>
+    <Carousel className="w-100 carousel-custom">
       {products &&
-        products.map(product => (
+        products.map((product) => (
           <Carousel.Item key={product._id}>
-            <img
-              className='d-block w-100'
-              src={product.image}
-              alt='product image'
-            />
-            <Carousel.Caption className='carousel__caption'>
+            <img className="d-block w-100" src={product.image} alt="product" />
+            <Carousel.Caption className="carousel__caption">
               <h5>{product.name}</h5>
             </Carousel.Caption>
           </Carousel.Item>

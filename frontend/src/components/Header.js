@@ -11,36 +11,31 @@ import { userLogout } from '../actions/UserActions'
 
 const Header = () => {
   const dispatch = useDispatch()
-  const { userInfo } = useSelector(state => state.userLogin)
+  const { userInfo } = useSelector((state) => state.userLogin)
   return (
-    <header className='sticky-top'>
-      <Navbar
-        bg='ligth'
-        expand='lg'
-        className='custom-navbar-header'
-        bg='dark-purple'
-      >
-        <Container className='header-container'>
-          <Navbar.Brand as='h1'>
-            <LinkContainer to='/'>
-              <Image src='/logo.png' fluid className='header-logo' />
+    <header className="sticky-top">
+      <Navbar bg="dark-purple" expand="lg" className="custom-navbar-header">
+        <Container className="header-container">
+          <Navbar.Brand as="h1">
+            <LinkContainer to="/">
+              <Image src="/logo.png" fluid className="header-logo" />
             </LinkContainer>
           </Navbar.Brand>
           <Route render={({ history }) => <SearchBox history={history} />} />
-          <Nav className='ml-auto'>
-            <LinkContainer to='/cart'>
+          <Nav className="ml-auto">
+            <LinkContainer to="/cart">
               <Nav.Link>
                 <FontAwesomeIcon
                   icon={faShoppingBasket}
-                  className='mr-2'
-                  size='lg'
+                  className="mr-2"
+                  size="lg"
                 />
               </Nav.Link>
             </LinkContainer>
             {userInfo ? (
               <Dropdown>
-                <Dropdown.Toggle id='dropdown-custom-1' as='a'>
-                  <FontAwesomeIcon icon={faUser} size='lg' className='mr-2' />
+                <Dropdown.Toggle id="dropdown-custom-1" as="a">
+                  <FontAwesomeIcon icon={faUser} size="lg" className="mr-2" />
                 </Dropdown.Toggle>
                 <Dropdown.Menu
                   popperConfig={{
@@ -51,12 +46,12 @@ const Header = () => {
                     }
                   }}
                 >
-                  <LinkContainer to='/profile'>
-                    <Dropdown.Item eventKey='4'>Profil</Dropdown.Item>
+                  <LinkContainer to="/profile">
+                    <Dropdown.Item eventKey="4">Profil</Dropdown.Item>
                   </LinkContainer>
                   <Dropdown.Item
                     onClick={() => dispatch(userLogout())}
-                    eventKey='5'
+                    eventKey="5"
                     active={false}
                   >
                     Wyloguj
@@ -65,23 +60,23 @@ const Header = () => {
                     <>
                       <Dropdown.Divider />
                       <Dropdown.Header>Zarządzaj</Dropdown.Header>
-                      <LinkContainer to='/admin/orders'>
-                        <Dropdown.Item eventKey='1'>Zamówienia</Dropdown.Item>
+                      <LinkContainer to="/admin/orders">
+                        <Dropdown.Item eventKey="1">Zamówienia</Dropdown.Item>
                       </LinkContainer>
-                      <LinkContainer to='/admin/users'>
-                        <Dropdown.Item eventKey='2'>Użytkownicy</Dropdown.Item>
+                      <LinkContainer to="/admin/users">
+                        <Dropdown.Item eventKey="2">Użytkownicy</Dropdown.Item>
                       </LinkContainer>
-                      <LinkContainer to='/admin/products'>
-                        <Dropdown.Item eventKey='3'>Produkty</Dropdown.Item>
+                      <LinkContainer to="/admin/products">
+                        <Dropdown.Item eventKey="3">Produkty</Dropdown.Item>
                       </LinkContainer>
                     </>
                   )}
                 </Dropdown.Menu>
               </Dropdown>
             ) : (
-              <LinkContainer to='/login'>
-                <Nav.Link className='mr-3'>
-                  <FontAwesomeIcon icon={faUser} size='lg' className='mr-2' />
+              <LinkContainer to="/login">
+                <Nav.Link className="mr-3">
+                  <FontAwesomeIcon icon={faUser} size="lg" className="mr-2" />
                 </Nav.Link>
               </LinkContainer>
             )}

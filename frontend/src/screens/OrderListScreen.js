@@ -4,25 +4,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Container, Table, Button } from 'react-bootstrap'
 import { getAllOrders } from '../actions/OrderActions'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faTimes,
-  faCheck,
-  faEdit,
-  faTrash
-} from '@fortawesome/free-solid-svg-icons'
+import { faTimes, faCheck } from '@fortawesome/free-solid-svg-icons'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 
-const trashStyle = {
-  padding: '0 !important',
-  marginLeft: '5px'
-}
-
 const OrderListScreen = ({ history }) => {
   const dispatch = useDispatch()
-  const { userInfo } = useSelector(state => state.userLogin)
+  const { userInfo } = useSelector((state) => state.userLogin)
 
-  const orderList = useSelector(state => state.orderList)
+  const orderList = useSelector((state) => state.orderList)
   const { error, orders, loading } = orderList
 
   useEffect(() => {
@@ -35,7 +25,7 @@ const OrderListScreen = ({ history }) => {
 
   return (
     <Container>
-      {error && <Message variant='danger'>{error}</Message>}
+      {error && <Message variant="danger">{error}</Message>}
       <h1>Zamówienia</h1>
       {loading ? (
         <Loader />
@@ -53,7 +43,7 @@ const OrderListScreen = ({ history }) => {
             </tr>
           </thead>
           <tbody>
-            {orders.map(order => (
+            {orders.map((order) => (
               <tr key={order._id}>
                 <td>{order._id}</td>
                 <td>
@@ -83,7 +73,7 @@ const OrderListScreen = ({ history }) => {
                     <FontAwesomeIcon icon={faTimes} style={{ color: 'red' }} />
                   )}
                 </td>
-                <td className='d-flex justify-content-center align-items-center'>
+                <td className="d-flex justify-content-center align-items-center">
                   <LinkContainer to={`/order/${order._id}`}>
                     <Button>Szczegóły</Button>
                   </LinkContainer>
@@ -93,7 +83,7 @@ const OrderListScreen = ({ history }) => {
           </tbody>
         </Table>
       ) : (
-        <Message variant='info'>Brak zamówień</Message>
+        <Message variant="info">Brak zamówień</Message>
       )}
     </Container>
   )

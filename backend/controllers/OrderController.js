@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler'
 import Order from '../models/OrderModel.js'
+import Product from '../models/ProductModel.js'
 
 //@desc create new order
 //@route POST /api/order
@@ -28,6 +29,16 @@ const createOrder = asyncHandler(async (req, res) => {
       order.paidAt = Date.now()
     }
     const createdOrder = await order.save()
+
+    cartItems.forEach(async (item) => {
+      console.log(item)
+
+      await Product.updateOne(
+        { _id: item.product },
+        { $inc: { countInStock: -1 } }
+      )
+    })
+
     res.status(201).json({ id: createdOrder._id })
   } catch (error) {
     console.log(error)
@@ -43,7 +54,7 @@ const getOrder = asyncHandler(async (req, res) => {
   const { id } = req.params
   try {
     const order = await Order.findById(id).populate('user', 'name email')
-    // to powinno się znaleźć ale dla ułatwienia zamkomentuje zeby nie robic drugeigo kontrolera na pobieranie orderu dla admina
+    // to powinno się znaleźć ale dla ułatwienia zamkomentuje zeby nie robic drugeigo kontrolera na pobieranie orderów dla admina
     // if (order.user !== req.user._id)
     //   throw new Error('Błąd pobierania zamówienia')
     res.json(order)
@@ -81,7 +92,8 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
 //@route GET /api/orders/myorders
 //@access private
 const getMyOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({ user: req.user._id })
+  const orders = await Order.find({ user: req.user._id }).sort({ _id: -1 })
+
   res.json(orders)
 })
 
@@ -89,7 +101,7 @@ const getMyOrders = asyncHandler(async (req, res) => {
 //@route GET /api/orders
 //@access private admin
 const getAllOrders = asyncHandler(async (req, res) => {
-  const orders = await Order.find({}).populate('user', 'name')
+  const orders = await Order.find({}).populate('user', 'name').sort({ _id: -1 })
   res.json(orders)
 })
 

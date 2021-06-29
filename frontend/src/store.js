@@ -1,7 +1,6 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
-import { logger } from 'redux-logger'
 import {
   productListReducer,
   productDetailsReducer,
@@ -84,14 +83,17 @@ const initialState = {
   }
 }
 
-const authInterceptor = ({ dispatch }) => next => action => {
-  if (action.status && action.status === 401) {
-    dispatch(userLogout())
-  } else {
+const authInterceptor =
+  ({ dispatch }) =>
+  (next) =>
+  (action) => {
+    if (action.status && action.status === 401) {
+      dispatch(userLogout())
+    } else {
+      next(action)
+    }
     next(action)
   }
-  next(action)
-}
 
 const middleware = [thunk, authInterceptor]
 

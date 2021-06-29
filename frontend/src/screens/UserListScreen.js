@@ -22,17 +22,17 @@ const trashStyle = {
 
 const UserListScreen = ({ history }) => {
   const dispatch = useDispatch()
-  const { userInfo } = useSelector(state => state.userLogin)
+  const { userInfo } = useSelector((state) => state.userLogin)
 
-  const userList = useSelector(state => state.userList)
+  const userList = useSelector((state) => state.userList)
   const { users, loading } = userList
 
-  const userDelete = useSelector(state => state.userDelete)
+  const userDelete = useSelector((state) => state.userDelete)
   const { success, error } = userDelete
 
   useEffect(() => {
     dispatch({ type: USER_DELETE_RESET })
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
@@ -42,14 +42,14 @@ const UserListScreen = ({ history }) => {
     }
   }, [userInfo, history, dispatch, success, error])
 
-  const handleDeleteUser = id => {
+  const handleDeleteUser = (id) => {
     dispatch(deleteUser(id))
   }
 
   return (
     <Container>
-      {error && <Message variant='danger'>{error}</Message>}
-      {success && <Message variant='success'>Użytkownik usunięty</Message>}
+      {error && <Message variant="danger">{error}</Message>}
+      {success && <Message variant="success">Użytkownik usunięty</Message>}
       <h1>Użytkownicy</h1>
       {loading ? (
         <Loader />
@@ -65,7 +65,7 @@ const UserListScreen = ({ history }) => {
             </tr>
           </thead>
           <tbody>
-            {users.map(user => (
+            {users.map((user) => (
               <tr key={user._id}>
                 <td>{user._id}</td>
                 <td>{user.name}</td>
@@ -80,18 +80,18 @@ const UserListScreen = ({ history }) => {
                     <FontAwesomeIcon icon={faTimes} style={{ color: 'red' }} />
                   )}
                 </td>
-                <td className='d-flex justify-content-center align-items-center'>
+                <td className="d-flex justify-content-center align-items-center">
                   <LinkContainer to={`/admin/users/${user._id}/edit`}>
-                    <Button variant='alert'>
-                      <FontAwesomeIcon size='xs' icon={faEdit} />
+                    <Button variant="alert">
+                      <FontAwesomeIcon size="xs" icon={faEdit} />
                     </Button>
                   </LinkContainer>
                   <Button
                     onClick={() => handleDeleteUser(user._id)}
-                    variant='danger'
+                    variant="danger"
                     style={trashStyle}
                   >
-                    <FontAwesomeIcon size='xs' icon={faTrash} />
+                    <FontAwesomeIcon size="xs" icon={faTrash} />
                   </Button>
                 </td>
               </tr>
