@@ -6,7 +6,7 @@ payment details to paypal sandbox :
 email : sb-3tp3d4977469@personal.example.com
 password: T?Hk9s)D
 
-check also the admin view :
+after create order, check also the admin view :
 l : admin@example.com
 p : 12345678
 
