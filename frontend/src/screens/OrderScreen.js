@@ -50,8 +50,6 @@ const OrderScreen = ({ history, match }) => {
   }
 
   useEffect(() => {
-    console.log(order)
-
     fetchPaypalClientId()
 
     if (!order || order._id !== id || successPay || successDeliver) {
