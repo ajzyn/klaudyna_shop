@@ -17,6 +17,7 @@ const getProducts = asyncHanlder(async (req, res) => {
         $text: {
           $search: query.keyword
         }
+        // countInStock:  {$gt : 1 }  zrobić filtracje od produktów których nie ma na stanie
       }
     : {}
 
@@ -84,15 +85,8 @@ const updateProduct = asyncHanlder(async (req, res) => {
 //@route POST /api/products
 //@access private admin
 const createProduct = asyncHanlder(async (req, res) => {
-  const {
-    name,
-    price,
-    brand,
-    category,
-    countInStock,
-    description,
-    image
-  } = req.body
+  const { name, price, brand, category, countInStock, description, image } =
+    req.body
 
   try {
     const product = new Product({
@@ -123,7 +117,7 @@ const createReview = asyncHanlder(async (req, res) => {
 
   if (product) {
     const alreadyReviewed = product.reviews.find(
-      r => r.user.toString() === req.user._id.toString()
+      (r) => r.user.toString() === req.user._id.toString()
     )
     if (alreadyReviewed) {
       res.status(400)
@@ -155,9 +149,7 @@ const createReview = asyncHanlder(async (req, res) => {
 //@route GET /api/products/top
 //@access public
 const getTopRank = asyncHanlder(async (req, res) => {
-  const products = await Product.find({})
-    .sort({ rating: -1 })
-    .limit(3)
+  const products = await Product.find({}).sort({ rating: -1 }).limit(3)
   if (products) {
     res.json(products)
   } else {

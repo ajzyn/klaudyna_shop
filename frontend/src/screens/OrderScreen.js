@@ -86,7 +86,7 @@ const OrderScreen = ({ history, match }) => {
           </Button>
         </Col>
         <Col>
-          {!userInfo.isAdmin && order && order.isPaid && (
+          {userInfo && !userInfo.isAdmin && order && order.isPaid && (
             <Button onClick={() => history.push('/')}>Kontynuuj zakupy</Button>
           )}
         </Col>

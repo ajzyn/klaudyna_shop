@@ -31,8 +31,6 @@ const createOrder = asyncHandler(async (req, res) => {
     const createdOrder = await order.save()
 
     cartItems.forEach(async (item) => {
-      console.log(item)
-
       await Product.updateOne(
         { _id: item.product },
         { $inc: { countInStock: -1 } }
