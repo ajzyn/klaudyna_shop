@@ -7,7 +7,7 @@ payment details to paypal sandbox >>
 email : sb-3tp3d4977469@personal.example.com
 password: T?Hk9s)D
 
-to run this app, you must put .env file to root folder
+to run this app, you must put .env file into root folder. 
 content of .env file 
 
 PORT = 5000
